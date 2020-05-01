@@ -79,10 +79,10 @@ async def on_message(message):
     await react_with("FeelsGoodMan")
     await channel.send(
         f"Attention everyone! "
-        "{message.author.mention} would like to play some League! "
-        ":ok_hand: "
-        "Are you interested? "
-        "(I've also pinged Darshan in the other server.)"
+        f"{message.author.mention} would like to play some League! "
+        f":ok_hand: "
+        f"Are you interested? "
+        f"(I've also pinged Darshan in the other server.)"
     )
     await channel.send(
         "To invoke this bot, just "
