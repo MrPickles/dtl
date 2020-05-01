@@ -8,10 +8,10 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-DADDY = 281527150765408256
+ANDREW = 281527150765408256
 
 THE_BADGER_HOLE = 326580881965842433
-TBH_GENERAL = 326580881965842433
+TBH_GENERAL_CHANNEL = 326580881965842433
 TBH_DEBUG_CHANNEL = 705667675292172288
 
 SUITE = 428695150294859786
@@ -21,7 +21,6 @@ TOBY = 279068702995906562
 JEREMY = 306074406235668480
 FRANZ = 356508428358778891
 DARSHAN = 284163385128386561
-# guild = discord.utils.get(client.guilds, name='My Server')
 
 bot = discord.Client()
 
@@ -57,53 +56,34 @@ async def on_message(message):
         return
 
     async def react_with(emoji: str):
-        guild = message.guild
         discord_emoji = discord.utils.get(guild.emojis, name=emoji)
         if discord_emoji:
             await message.add_reaction(discord_emoji)
         else:
             logger.warning(f"emoji {emoji} was not found")
 
-    if channel.id == TBH_DEBUG_CHANNEL:
-        logger.debug(message)
-        print(message.content)
-        # feelsbadman = bot.get_emoji(440382843865006082)
-        feelsbadman = discord.utils.get(guild.emojis, name="feelsbadman")
-        mention = message.author.mention
-        # emoji = discord.utils.get(guild.emojis, name='LUL')
-        if author_id == DADDY:
-            await channel.send(f"the bot speaks! {str(feelsbadman)} {mention}")
-            await react_with("feelsbadman")
-        # return
-
     await react_with("FeelsGoodMan")
     await channel.send(
-        f"Attention everyone! "
+        f"Hello everyone! :wave: "
         f"{message.author.mention} would like to play some League! "
-        f":ok_hand: "
         f"Are you interested? "
-        f"(I've also pinged Darshan in the other server.)"
+        f"(I've also pinged Darshan in the other server. :100:)"
     )
     await channel.send(
-        "To invoke this bot, just "
+        "To get my attention, :robot: just "
         "say something in this channel with the substring `SL?` or `DTL?` "
-        "or mention me in this channel!"
+        "or mention me in this channel."
     )
-    if author_id == DADDY:
+    if author_id == ANDREW:
         await channel.send(
             "Oh look, Andrew pinged me. Hi daddy! :heart: :heart: :heart:"
         )
 
-    downstream = bot.get_channel(TBH_DEBUG_CHANNEL)
-    daddio = bot.get_user(DADDY)
-    await downstream.send(f"{daddio.mention} League?")
-    await downstream.send(f"{guild.owner.mention} valorant?")
-
-    # if it's in SL of suite++
-    # AND it's a relevant string
-    # - react to the msg
-    # - say something fun
-    # - ping darshan on TBH
+    badger_hole = bot.get_channel(TBH_GENERAL_CHANNEL)
+    darshan = bot.get_user(DARSHAN)
+    # badger_hole = bot.get_channel(TBH_DEBUG_CHANNEL)
+    # darshan = bot.get_user(ANDREW)
+    await badger_hole.send(f"{darshan.mention} League?")
 
 
 if __name__ == "__main__":
