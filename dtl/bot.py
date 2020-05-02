@@ -63,7 +63,7 @@ async def on_message(message):
         else:
             logger.warning(f"emoji {emoji} was not found")
 
-    await react_with("FeelsGoodMan")
+    await react_with("feelsgoodman")
     await channel.send(
         f"Hello @here! :wave: "
         f"{message.author.mention} would like to play some League! "
