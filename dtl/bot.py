@@ -54,6 +54,8 @@ async def on_message(message):
     ):
         return
 
+    logger.info(message)
+
     async def react_with(emoji: str):
         discord_emoji = discord.utils.get(guild.emojis, name=emoji)
         if discord_emoji:
