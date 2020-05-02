@@ -64,7 +64,7 @@ async def on_message(message):
 
     await react_with("FeelsGoodMan")
     await channel.send(
-        f"Hello everyone! :wave: "
+        f"Hello {everyone.mention}! :wave: "
         f"{message.author.mention} would like to play some League! "
         f"Are you interested? "
         f"(I've also pinged Darshan in the other server. :100:)"
@@ -81,8 +81,6 @@ async def on_message(message):
 
     badger_hole = bot.get_channel(TBH_GENERAL_CHANNEL)
     darshan = bot.get_user(DARSHAN)
-    # badger_hole = bot.get_channel(TBH_DEBUG_CHANNEL)
-    # darshan = bot.get_user(ANDREW)
     await badger_hole.send(f"{darshan.mention} League?")
 
 
