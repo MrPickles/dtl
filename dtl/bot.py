@@ -80,9 +80,10 @@ async def on_message(message):
             "Oh look, Andrew pinged me. Hi daddy! :heart: :heart: :heart:"
         )
 
-    badger_hole = bot.get_channel(TBH_GENERAL_CHANNEL)
-    darshan = bot.get_user(DARSHAN)
-    await badger_hole.send(f"{darshan.mention} League?")
+    if channel.id == SL_CHANNEL:
+        badger_hole = bot.get_channel(TBH_GENERAL_CHANNEL)
+        darshan = bot.get_user(DARSHAN)
+        await badger_hole.send(f"{darshan.mention} League?")
 
 
 if __name__ == "__main__":
