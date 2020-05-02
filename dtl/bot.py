@@ -41,7 +41,6 @@ async def on_message(message):
     guild = message.guild
     channel = message.channel
     author_id = message.author.id
-    everyone = guild.default_role
 
     if author_id == bot.user.id:
         return
@@ -64,7 +63,7 @@ async def on_message(message):
 
     await react_with("FeelsGoodMan")
     await channel.send(
-        f"Hello {everyone.mention}! :wave: "
+        f"Hello @here! :wave: "
         f"{message.author.mention} would like to play some League! "
         f"Are you interested? "
         f"(I've also pinged Darshan in the other server. :100:)"
