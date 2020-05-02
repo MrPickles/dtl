@@ -8,4 +8,4 @@ legends.
 1. Install [Poetry](https://python-poetry.org/).
 2. Install dependencies. `poetry install`
 3. Put secrets in `.env`.
-4. Run the server. `python -m dtl.bot`
+4. Run the server. `poetry run :python -m dtl.bot`
