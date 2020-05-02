@@ -360,8 +360,8 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "ee26077e942ca4030df132bf3beb8205d4a67d4d1abc29f7393ce8f162d8822c"
-python-versions = "3.7.7"
+content-hash = "70df0206da49fbc720bcba7d90f55014d5cb1c99f9de7a9343de2d560d884620"
+python-versions = "3.7.6"
 
 [metadata.files]
 aiohttp = [
