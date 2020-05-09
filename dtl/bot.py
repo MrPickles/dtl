@@ -2,7 +2,7 @@ import os
 import logging
 
 from dotenv import load_dotenv
-import discord
+import discord  # type: ignore
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -25,14 +25,14 @@ DARSHAN = 284163385128386561
 bot = discord.Client()
 
 
-def this_person_wants_to_play_league(msg):
+def this_person_wants_to_play_league(msg: str) -> bool:
     keywords = ["sl?", "dtl?"]
     return any(map(lambda x: x in msg.lower(), keywords))
 
 
 @bot.event
 async def on_ready():
-    logger.info(f"Logged in as {bot.user.name} with ID {bot.user.id}")
+    logger.info("Logged in as {name} with ID {id}", name=bot.user.name, id=bot.user.id)
     logger.info("Bot is ready to receive messages!")
 
 
@@ -61,7 +61,7 @@ async def on_message(message):
         if discord_emoji:
             await message.add_reaction(discord_emoji)
         else:
-            logger.warning(f"emoji {emoji} was not found")
+            logger.warning("emoji {emoji} was not found", emoji=emoji)
 
     await react_with("feelsgoodman")
     await channel.send(
