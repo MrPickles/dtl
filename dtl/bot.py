@@ -32,7 +32,7 @@ def this_person_wants_to_play_league(msg: str) -> bool:
 
 @bot.event
 async def on_ready():
-    logger.info("Logged in as {name} with ID {id}", name=bot.user.name, id=bot.user.id)
+    logger.info("Logged in as %s with ID %s", bot.user.name, bot.user.id)
     logger.info("Bot is ready to receive messages!")
 
 
