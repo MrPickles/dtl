@@ -578,8 +578,8 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "d68345ac38eaf24116a77f74ec273eb8bb7908e2ed74de1a9ee790d920419b50"
-python-versions = "^3.7.6"
+content-hash = "854a36e73e097965f3bb29d20ac8235a82a0b6729f82a6ff2ec23a0d96741251"
+python-versions = "3.7.6"
 
 [metadata.files]
 aiohttp = [
