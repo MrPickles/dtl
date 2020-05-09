@@ -5,13 +5,16 @@ description = ""
 authors = ["Andrew Liu <liu.andrew.x@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.7.6"
+python = "^3.7.6"
 "discord.py" = "^1.3.3"
 python-dotenv = "^0.13.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 pre-commit = "^2.3.0"
+black = "^19.10b0"
+pylint = "^2.5.2"
+flake8 = "^3.7.9"
 
 [build-system]
 requires = ["poetry>=0.12"]

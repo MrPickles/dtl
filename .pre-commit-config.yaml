@@ -9,3 +9,15 @@ repos:
     rev: 19.3b0
     hooks:
     -   id: black
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.9
+    hooks:
+    -   id: flake8
+-   repo: local
+    hooks:
+    # Pylint has to be local because it depends on the virtualenv
+    -   id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
