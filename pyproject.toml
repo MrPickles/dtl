@@ -8,6 +8,7 @@ authors = ["Andrew Liu <liu.andrew.x@gmail.com>"]
 python = "3.7.6"
 "discord.py" = "^1.3.3"
 python-dotenv = "^0.13.0"
+humanize = "^2.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
