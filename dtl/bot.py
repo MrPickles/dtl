@@ -142,7 +142,7 @@ async def on_message(message):
 
         await discord_channel.send(
             f"My proprietary state-of-the-art AI-powered NLP algorithm has "
-            f"detected that {pronoun} would like to play in "
+            f"detected that {pronoun} would like to play in approximately "
             f"{naturaldelta(timediff)}. I'll remind you then! :timer:"
         )
 
