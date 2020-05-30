@@ -91,14 +91,14 @@ async def on_message(message):
         else:
             logger.warning("emoji {emoji} was not found", emoji=emoji)
 
-    if author_id == bot.user.id or channel.id not in [TBH_DEBUG_CHANNEL, SL_CHANNEL]:
-        return
-
     if bot.user in message.mentions:
         # This is very messy. Clean it up later.
         logger.info("Pizza time!")
         await react_with("feelsgoodman")
         await channel.send("https://tenor.com/bgq1G.gif")
+        return
+
+    if author_id == bot.user.id or channel.id not in [TBH_DEBUG_CHANNEL, SL_CHANNEL]:
         return
 
     if not this_person_wants_to_play_league(message.content):
