@@ -84,13 +84,24 @@ async def on_message(message):
     badger_hole = bot.get_channel(TBH_GENERAL_CHANNEL)
     darshan = bot.get_user(DARSHAN)
 
+    async def react_with(emoji: str):
+        discord_emoji = discord.utils.get(guild.emojis, name=emoji)
+        if discord_emoji:
+            await message.add_reaction(discord_emoji)
+        else:
+            logger.warning("emoji {emoji} was not found", emoji=emoji)
+
     if author_id == bot.user.id or channel.id not in [TBH_DEBUG_CHANNEL, SL_CHANNEL]:
         return
 
-    if (
-        not this_person_wants_to_play_league(message.content)
-        and bot.user not in message.mentions
-    ):
+    if bot.user in message.mentions:
+        # This is very messy. Clean it up later.
+        logger.info("Pizza time!")
+        await react_with("feelsgoodman")
+        await channel.send("https://tenor.com/bgq1G.gif")
+        return
+
+    if not this_person_wants_to_play_league(message.content):
         return
 
     # To avoid spamming.
@@ -100,16 +111,11 @@ async def on_message(message):
 
     logger.info(message)
 
-    async def react_with(emoji: str):
-        discord_emoji = discord.utils.get(guild.emojis, name=emoji)
-        if discord_emoji:
-            await message.add_reaction(discord_emoji)
-        else:
-            logger.warning("emoji {emoji} was not found", emoji=emoji)
-
     async def remind_about_league(duration: timedelta) -> None:
         try:
-            logger.info("Coroutine started!")
+            logger.info(
+                "Coroutine started! Waiting %d seconds...", duration.total_seconds()
+            )
             await aio.sleep(duration.total_seconds())
             await badger_hole.send(
                 ":alarm_clock: This is a reminder that "
