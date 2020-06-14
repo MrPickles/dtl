@@ -24,6 +24,9 @@ def test_tpwtpl():
     assert not tpwtpl("So league?")
     assert not tpwtpl("SL")
     assert not tpwtpl("DTL")
+    assert not tpwtpl("slick?")
+    assert not tpwtpl("slow?")
+    assert not tpwtpl("when you finally go to sleep?")
 
 
 def test_parse_timer():

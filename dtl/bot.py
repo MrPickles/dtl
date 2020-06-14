@@ -32,7 +32,10 @@ pending_reminder: Optional[aio.Task] = None
 
 def this_person_wants_to_play_league(msg: str) -> bool:
     keywords = ["sl", "dtl"]
-    return any(map(lambda x: x in msg.lower(), keywords)) and msg[-1] == "?"
+    return (
+        any(map(lambda x: x in msg[:-1].lower().split(" "), keywords))
+        and msg[-1] == "?"
+    )
 
 
 def parse_timer(msg: str) -> Optional[timedelta]:
