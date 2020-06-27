@@ -33,16 +33,20 @@ class LeagueBot(discord.Client):
     async def on_message(self, message):
         logger.info(message)
 
+        # Don't interact with self.
         if message.author.id == self.user.id:
             return
 
+        # Pizza time!
         if self.user in message.mentions or is_pizza_time(message.content):
             await LeagueBot._pizza_time_handler(message)
             return
 
+        # Only interact with specific channels.
         if message.channel.id not in [TBH_DEBUG_CHANNEL, SL_CHANNEL]:
             return
 
+        # Droppin' time!
         if this_person_wants_to_play_league(message.content):
             await self._dtl_handler(message)
             return
@@ -55,6 +59,7 @@ class LeagueBot(discord.Client):
         # To avoid spamming.
         if self.debug:
             badger_hole = self.get_channel(TBH_DEBUG_CHANNEL)
+            channel = self.get_channel(TBH_DEBUG_CHANNEL)
             darshan = self.get_user(ANDREW)
 
         async def remind_about_league(duration: timedelta) -> None:
