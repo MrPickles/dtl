@@ -11,4 +11,5 @@ if __name__ == "__main__":
     load_dotenv()
     logging.basicConfig(level=logging.DEBUG)
     bot = LeagueBot()
+    logger.info("Sup dawg")
     bot.run(os.getenv("BOT_TOKEN"))

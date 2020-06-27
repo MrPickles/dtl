@@ -6,69 +6,21 @@ import asyncio as aio
 import discord  # type: ignore
 from humanize import naturaldelta  # type: ignore
 
+from dtl.consts import (
+    ANDREW,
+    TBH_GENERAL_CHANNEL,
+    TBH_DEBUG_CHANNEL,
+    SL_CHANNEL,
+    DARSHAN,
+)
+from dtl.util import this_person_wants_to_play_league, parse_timer
+
 logger = logging.getLogger(__name__)
-
-ANDREW = 281527150765408256
-
-THE_BADGER_HOLE = 326580881965842433
-TBH_GENERAL_CHANNEL = 326580881965842433
-TBH_DEBUG_CHANNEL = 705667675292172288
-
-SUITE = 428695150294859786
-SL_CHANNEL = 615749992388362250
-
-TOBY = 279068702995906562
-JEREMY = 306074406235668480
-FRANZ = 356508428358778891
-DARSHAN = 284163385128386561
-
-pending_reminder: Optional[aio.Task] = None
-
-
-def this_person_wants_to_play_league(msg: str) -> bool:
-    keywords = ["sl", "dtl"]
-    return (
-        any(map(lambda x: x in msg[:-1].lower().split(" "), keywords))
-        and msg[-1] == "?"
-    )
-
-
-def parse_timer(msg: str) -> Optional[timedelta]:
-    in_split = msg.split(" in ")
-    if len(in_split) != 2:
-        logger.debug('No substring of "in" detected...')
-        return None
-
-    space_split = in_split[1].split(" ")
-    if len(space_split) != 2:
-        logger.debug("Time and unit wasn't split by a space")
-        return None
-
-    try:
-        value = float(space_split[0])
-    except ValueError as e:
-        logger.debug("Numerical value failed to parse: %s", e)
-        return None
-
-    if value < 1:
-        logger.debug("Duration is not positive: %s", value)
-        return None
-
-    full_unit = space_split[1]
-    unit = full_unit[0].lower()
-    if unit == "h" and value <= 3:
-        return timedelta(hours=value)
-
-    if unit == "m" and value >= 5:
-        return timedelta(minutes=value)
-
-    logger.debug(
-        "Time unit didn't parse (%s) or value was out of bounds (%s)", full_unit, value
-    )
-    return None
 
 
 class LeagueBot(discord.Client):
+    pending_reminder: Optional[aio.Task] = None
+
     async def on_ready(self):
         logger.info("Logged in as %s with ID %s", self.user.name, self.user.id)
         logger.info("Bot is ready to receive messages!")
@@ -121,8 +73,7 @@ class LeagueBot(discord.Client):
                     f"{message.author.mention} expressed interest in League "
                     f"{naturaldelta(duration)} ago! Are we droppin'?"
                 )
-                global pending_reminder  # pylint: disable=global-statement
-                pending_reminder = None
+                self.pending_reminder = None
                 logger.info("Coroutine completed!")
             except aio.CancelledError:
                 logger.info("Coroutine was cancelled!")
@@ -153,12 +104,11 @@ class LeagueBot(discord.Client):
 
         await maybe_send_reminder_msg(channel, "you")
         if timediff is not None:
-            global pending_reminder  # pylint: disable=global-statement
-            if pending_reminder is not None:
+            if self.pending_reminder is not None:
                 # Cancel any pending reminders.
-                pending_reminder.cancel()
+                self.pending_reminder.cancel()
             # Create a coroutine to remind the channel.
-            pending_reminder = aio.create_task(remind_about_league(timediff))
+            self.pending_reminder = aio.create_task(remind_about_league(timediff))
 
         await channel.send(
             "To get my attention, :robot: just "

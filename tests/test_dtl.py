@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from dtl import __version__
-from dtl.bot import this_person_wants_to_play_league as tpwtpl, parse_timer
+from dtl.util import this_person_wants_to_play_league as tpwtpl, parse_timer
 
 
 def test_version():
