@@ -29,6 +29,10 @@ class LeagueBot(discord.Client):
         logger.info("Logged in as %s with ID %s", self.user.name, self.user.id)
         logger.info("Debug mode=%s", self.debug)
         logger.info("Bot is ready to receive messages!")
+        if not self.debug:
+            debug_channel = self.get_channel(TBH_DEBUG_CHANNEL)
+            andrew = self.get_user(ANDREW)
+            await debug_channel.send(f"{andrew.mention} New bot successfully deployed!")
 
     async def on_message(self, message):
         logger.info(message)
@@ -58,8 +62,7 @@ class LeagueBot(discord.Client):
 
         # To avoid spamming.
         if self.debug:
-            badger_hole = self.get_channel(TBH_DEBUG_CHANNEL)
-            channel = self.get_channel(TBH_DEBUG_CHANNEL)
+            channel = badger_hole = self.get_channel(TBH_DEBUG_CHANNEL)
             darshan = self.get_user(ANDREW)
 
         async def remind_about_league(duration: timedelta) -> None:
