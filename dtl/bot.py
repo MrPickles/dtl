@@ -13,7 +13,7 @@ from dtl.consts import (
     SL_CHANNEL,
     DARSHAN,
 )
-from dtl.util import this_person_wants_to_play_league, parse_timer
+from dtl.util import this_person_wants_to_play_league, parse_timer, is_pizza_time
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class LeagueBot(discord.Client):
         if message.author.id == self.user.id:
             return
 
-        if self.user in message.mentions:
+        if self.user in message.mentions or is_pizza_time(message.content):
             await LeagueBot._pizza_time_handler(message)
             return
 

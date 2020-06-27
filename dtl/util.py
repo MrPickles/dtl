@@ -5,6 +5,10 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 
+def is_pizza_time(msg: str) -> bool:
+    return any(map(lambda x: x in msg.lower().split(" "), ["pizza", "time"]))
+
+
 def this_person_wants_to_play_league(msg: str) -> bool:
     keywords = ["sl", "dtl"]
     return (

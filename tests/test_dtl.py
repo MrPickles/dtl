@@ -1,7 +1,11 @@
 from datetime import timedelta
 
 from dtl import __version__
-from dtl.util import this_person_wants_to_play_league as tpwtpl, parse_timer
+from dtl.util import (
+    this_person_wants_to_play_league as tpwtpl,
+    parse_timer,
+    is_pizza_time,
+)
 
 
 def test_version():
@@ -50,3 +54,14 @@ def test_parse_timer():
     assert parse_timer("DTL in 5 hours?") is None
     assert parse_timer("DTL in 4 minutes?") is None
     assert parse_timer("DTL in 3 minutes?") is None
+
+
+def test_pizza_time():
+    assert is_pizza_time("pizza")
+    assert is_pizza_time("time")
+    assert is_pizza_time("pizza time")
+    assert is_pizza_time("pIzZA TiMe")
+    assert is_pizza_time("time to stop")
+
+    assert not is_pizza_time("piazza")
+    assert not is_pizza_time("??????")

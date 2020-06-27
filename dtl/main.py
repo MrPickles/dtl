@@ -12,8 +12,7 @@ if __name__ == "__main__":
     debug = os.getenv("ENV") == "development"
     token = os.getenv("BOT_TOKEN")
 
-    log_level = logging.DEBUG if debug else logging.INFO
-    logging.basicConfig(level=log_level)
+    logging.basicConfig(level=logging.INFO)
 
     bot = LeagueBot(debug)
     logger.info("Starting bot!")
