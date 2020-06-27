@@ -21,46 +21,41 @@ logger = logging.getLogger(__name__)
 class LeagueBot(discord.Client):
     pending_reminder: Optional[aio.Task] = None
 
+    def __init__(self, debug: bool = False):
+        super().__init__()
+        self.debug = debug
+
     async def on_ready(self):
         logger.info("Logged in as %s with ID %s", self.user.name, self.user.id)
+        logger.info("Debug mode=%s", self.debug)
         logger.info("Bot is ready to receive messages!")
 
     async def on_message(self, message):
-        guild = message.guild
+        logger.info(message)
+
+        if message.author.id == self.user.id:
+            return
+
+        if self.user in message.mentions:
+            await LeagueBot._pizza_time_handler(message)
+            return
+
+        if message.channel.id not in [TBH_DEBUG_CHANNEL, SL_CHANNEL]:
+            return
+
+        if this_person_wants_to_play_league(message.content):
+            await self._dtl_handler(message)
+            return
+
+    async def _dtl_handler(self, message):
         channel = message.channel
-        author_id = message.author.id
         badger_hole = self.get_channel(TBH_GENERAL_CHANNEL)
         darshan = self.get_user(DARSHAN)
 
-        async def react_with(emoji: str):
-            discord_emoji = discord.utils.get(guild.emojis, name=emoji)
-            if discord_emoji:
-                await message.add_reaction(discord_emoji)
-            else:
-                logger.warning("emoji {emoji} was not found", emoji=emoji)
-
-        if self.user in message.mentions:
-            # This is very messy. Clean it up later.
-            logger.info("Pizza time!")
-            await react_with("feelsgoodman")
-            await channel.send("https://tenor.com/bgq1G.gif")
-            return
-
-        if author_id == self.user.id or channel.id not in [
-            TBH_DEBUG_CHANNEL,
-            SL_CHANNEL,
-        ]:
-            return
-
-        if not this_person_wants_to_play_league(message.content):
-            return
-
         # To avoid spamming.
-        if channel.id == TBH_DEBUG_CHANNEL:
+        if self.debug:
             badger_hole = self.get_channel(TBH_DEBUG_CHANNEL)
             darshan = self.get_user(ANDREW)
-
-        logger.info(message)
 
         async def remind_about_league(duration: timedelta) -> None:
             try:
@@ -82,41 +77,26 @@ class LeagueBot(discord.Client):
                     "The old reminder has been cancelled.)"
                 )
 
-        # Interact with Suite++
-        await react_with("feelsgoodman")
-        await channel.send(
-            f"Hello @here! :wave: "
-            f"{message.author.mention} would like to play some League! "
-            f"(I've also pinged Darshan in the other server. :100:)"
-        )
-
-        timediff = parse_timer(message.content)
-
-        async def maybe_send_reminder_msg(discord_channel, pronoun: str) -> None:
-            if timediff is None:
-                return
-
+        async def send_reminder_msg(timediff, discord_channel, pronoun: str) -> None:
             await discord_channel.send(
                 f"My proprietary state-of-the-art AI-powered NLP algorithm has "
                 f"detected that {pronoun} would like to play in approximately "
                 f"{naturaldelta(timediff)}. I'll remind you then! :timer:"
             )
 
-        await maybe_send_reminder_msg(channel, "you")
-        if timediff is not None:
-            if self.pending_reminder is not None:
-                # Cancel any pending reminders.
-                self.pending_reminder.cancel()
-            # Create a coroutine to remind the channel.
-            self.pending_reminder = aio.create_task(remind_about_league(timediff))
-
+        # Interact with Suite++
+        await self._emoji_react(message)
+        await channel.send(
+            f"Hello @here! :wave: "
+            f"{message.author.mention} would like to play some League! "
+            f"(I've also pinged Darshan in the other server. :100:)"
+        )
         await channel.send(
             "To get my attention, :robot: just "
             "ask a question in this channel with the substring `SL` or `DTL` "
             "or mention me in this channel."
         )
-
-        if author_id == ANDREW:
+        if message.author.id == ANDREW:
             await channel.send(
                 "Oh look, Andrew pinged me. Hi daddy! :heart: :heart: :heart:"
             )
@@ -126,4 +106,28 @@ class LeagueBot(discord.Client):
             f"Hello {darshan.mention}! :wave: {message.author.mention} wonders "
             "if you're interested in some League!"
         )
-        await maybe_send_reminder_msg(badger_hole, "he")
+
+        # Send timing message and set reminder.
+        timediff = parse_timer(message.content)
+        if timediff is not None:
+            await send_reminder_msg(timediff, channel, "you")
+            await send_reminder_msg(timediff, badger_hole, "he")
+            if self.pending_reminder is not None:
+                # Cancel any pending reminders.
+                self.pending_reminder.cancel()
+            # Create a coroutine to remind the channel.
+            self.pending_reminder = aio.create_task(remind_about_league(timediff))
+
+    @staticmethod
+    async def _pizza_time_handler(message):
+        logger.info("Pizza time!")
+        await LeagueBot._emoji_react(message)
+        await message.channel.send("https://tenor.com/bgq1G.gif")
+
+    @staticmethod
+    async def _emoji_react(message, emoji: str = "feelsgoodman"):
+        discord_emoji = discord.utils.get(message.guild.emojis, name=emoji)
+        if not discord_emoji:
+            logger.warning("emoji {emoji} was not found", emoji=emoji)
+            return
+        await message.add_reaction(discord_emoji)
