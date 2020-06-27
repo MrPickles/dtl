@@ -1,1 +1,1 @@
-worker: python -m dtl.bot
+worker: python -m dtl.main

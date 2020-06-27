@@ -1,16 +1,12 @@
-import os
 import logging
 from datetime import timedelta
 from typing import Optional
 import asyncio as aio
 
-from dotenv import load_dotenv
 import discord  # type: ignore
 from humanize import naturaldelta  # type: ignore
 
-logging.basicConfig()
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 ANDREW = 281527150765408256
 
@@ -181,9 +177,3 @@ class LeagueBot(discord.Client):
             "if you're interested in some League!"
         )
         await maybe_send_reminder_msg(badger_hole, "he")
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    bot = LeagueBot()
-    bot.run(os.getenv("BOT_TOKEN"))
