@@ -1,5 +1,5 @@
 import logging
-from datetime import timedelta
+from datetime import datetime, timedelta
 from typing import Optional
 import asyncio as aio
 
@@ -19,11 +19,11 @@ logger = logging.getLogger(__name__)
 
 
 class LeagueBot(discord.Client):
-    pending_reminder: Optional[aio.Task] = None
-
     def __init__(self, debug: bool = False):
         super().__init__()
         self.debug = debug
+        self.pending_reminder: Optional[aio.Task] = None
+        self.prev_pizza_time: datetime = datetime.utcfromtimestamp(0)
 
     async def on_ready(self):
         logger.info("Logged in as %s with ID %s", self.user.name, self.user.id)
@@ -39,7 +39,7 @@ class LeagueBot(discord.Client):
 
         # Pizza time!
         if self.user in message.mentions or is_pizza_time(message.content):
-            await LeagueBot._pizza_time_handler(message)
+            await self._pizza_time_handler(message)
             return
 
         # Only interact with specific channels.
@@ -122,16 +122,24 @@ class LeagueBot(discord.Client):
             # Create a coroutine to remind the channel.
             self.pending_reminder = aio.create_task(remind_about_league(timediff))
 
-    @staticmethod
-    async def _pizza_time_handler(message):
+    async def _pizza_time_handler(self, message):
         logger.info("Pizza time!")
-        await LeagueBot._emoji_react(message)
+        await LeagueBot._emoji_react(message, "🍕")
+        now = datetime.now()
+        if (now - self.prev_pizza_time).total_seconds() < 300:
+            logger.info("We hit a pizza time rate limit!")
+            return
         await message.channel.send("https://tenor.com/bgq1G.gif")
+        self.prev_pizza_time = now
 
     @staticmethod
     async def _emoji_react(message, emoji: str = "feelsgoodman"):
         discord_emoji = discord.utils.get(message.guild.emojis, name=emoji)
-        if not discord_emoji:
-            logger.warning("emoji {emoji} was not found", emoji=emoji)
+        if discord_emoji:
+            await message.add_reaction(discord_emoji)
             return
-        await message.add_reaction(discord_emoji)
+        try:
+            # Maybe it's a default emoji?
+            await message.add_reaction(emoji)
+        except discord.errors.HTTPException:
+            logger.warning("emoji %s was not found", emoji)
