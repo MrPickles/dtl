@@ -13,7 +13,12 @@ from dtl.consts import (
     SL_CHANNEL,
     DARSHAN,
 )
-from dtl.util import this_person_wants_to_play_league, parse_timer, is_pizza_time
+from dtl.util import (
+    this_person_wants_to_play_league,
+    parse_timer,
+    is_pizza_time,
+    shit_bot,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +40,11 @@ class LeagueBot(discord.Client):
 
         # Don't interact with self.
         if message.author.id == self.user.id:
+            return
+
+        # Shit bot!
+        if shit_bot(message.content):
+            await self._shit_bot_handler(message)
             return
 
         # Pizza time!
@@ -121,6 +131,9 @@ class LeagueBot(discord.Client):
                 self.pending_reminder.cancel()
             # Create a coroutine to remind the channel.
             self.pending_reminder = aio.create_task(remind_about_league(timediff))
+
+    async def _shit_bot_handler(self, message):
+        await LeagueBot._emoji_react(message, "feelsbadman")
 
     async def _pizza_time_handler(self, message):
         logger.info("Pizza time!")

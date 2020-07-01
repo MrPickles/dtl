@@ -5,6 +5,10 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 
+def shit_bot(msg: str) -> bool:
+    return all(map(lambda x: x in msg.lower().split(" "), ["shit", "bot"]))
+
+
 def is_pizza_time(msg: str) -> bool:
     return any(map(lambda x: x in msg.lower().split(" "), ["pizza", "time"]))
 
