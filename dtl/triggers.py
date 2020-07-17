@@ -15,6 +15,7 @@ from dtl.gifs import (
     best_words,
     bitconnect,
     hey_bitch,
+    terraria,
 )
 from dtl.consts import ANDREW
 from dtl.util import parse_timer
@@ -46,6 +47,8 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
     if bot.is_rate_limited():
         return None
     tokens = message.content.lower().split(" ")
+    if all(map(lambda x: x in tokens, ["family", "time"])):
+        return gif_builder([terraria], ["thonk"])
     if any(map(lambda x: x in tokens, ["pizza", "time"])):
         return gif_builder([pizza_time], ["🍕"])
     if any(map(lambda x: x in tokens, ["hacker"])):
