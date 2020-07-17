@@ -5,22 +5,6 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 
-def shit_bot(msg: str) -> bool:
-    return all(map(lambda x: x in msg.lower().split(" "), ["shit", "bot"]))
-
-
-def is_pizza_time(msg: str) -> bool:
-    return any(map(lambda x: x in msg.lower().split(" "), ["pizza", "time"]))
-
-
-def this_person_wants_to_play_league(msg: str) -> bool:
-    keywords = ["sl", "dtl"]
-    return (
-        any(map(lambda x: x in msg[:-1].lower().split(" "), keywords))
-        and msg[-1] == "?"
-    )
-
-
 def parse_timer(msg: str) -> Optional[timedelta]:
     in_split = msg.split(" in ")
     if len(in_split) != 2:
