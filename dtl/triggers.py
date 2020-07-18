@@ -25,12 +25,18 @@ logger = logging.getLogger(__name__)
 
 def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
     async def metasrc(_, message):
-        champion = message.content.lower().split(" ")[1]
+        tokens = message.content.lower().split(" ")
+        champion = "".join(tokens[1:])
         champion = re.sub("[^a-z]", "", champion[:15])
-        await message.channel.send(f"https://www.metasrc.com/aram/champion/{champion}")
+        if tokens[0] == "aram":
+            await message.channel.send(
+                f"https://www.metasrc.com/aram/champion/{champion}"
+            )
+        else:
+            await message.channel.send(f"https://na.op.gg/champion/{champion}")
 
     tokens = message.content.lower().split(" ")
-    return metasrc if len(tokens) == 2 and tokens[0] == "aram" else None
+    return metasrc if len(tokens) > 1 and tokens[0] in ["aram", "rift"] else None
 
 
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
