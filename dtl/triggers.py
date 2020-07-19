@@ -73,7 +73,7 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
         return gif_builder([best_words], ["🇺🇸", "🦅", "🍔"])
     if check(["hi", "hey", "hello"]) or bot.user in message.mentions:
         return gif_builder([hey_gurl, bitconnect, hey_bitch], ["👋"])
-    if check(["elon", "musk", "simulation"]):
+    if check(["elon", "musk", "simulation", "tesla"]):
         return gif_builder([elon_musk], ["🚭"])
     if check(["trigger"], cond=lambda t, k: t.startswith(k)):
         return gif_builder([triggered], ["⚠️", "🚨", "☢️"])
