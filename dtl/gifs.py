@@ -8,3 +8,5 @@ best_words = "https://giphy.com/gifs/moodman-trump-words-i-know-VGVwLultLZjrrssA
 bitconnect = "https://giphy.com/gifs/carlos-scam-bitconnect-YkYt0FzMNPJkFnSQlf"
 hey_bitch = "https://tenor.com/GDWD.gif"
 terraria = "https://tenor.com/Yh2O.gif"
+elon_musk = "https://gph.is/2M7iQRP"
+triggered = "https://gfycat.com/eagereminentamethystinepython"

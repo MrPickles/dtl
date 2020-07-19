@@ -79,6 +79,9 @@ class LeagueBot(discord.Client):
         self.pending_reminder = aio.create_task(reminder())
 
     async def emoji(self, message, emoji: str):
+        if len(emoji) < 2:
+            # Don't waste time searching; it has to be a default emoji.
+            return emoji
         discord_emoji = discord.utils.get(message.guild.emojis, name=emoji)
         return discord_emoji if discord_emoji else emoji
 
