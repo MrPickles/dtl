@@ -61,6 +61,8 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
     def check(keywords, cond=lambda t, k: t == k, reducer=any) -> bool:
         return reducer(map(lambda k: any(map(lambda t: cond(t, k), tokens)), keywords))
 
+    if message.content.lower() == "f":
+        return gif_builder([], ["press_f"])
     if check(["family", "time"], reducer=all):
         return gif_builder([terraria], ["thonk"])
     if check(["pizza", "time"]):
