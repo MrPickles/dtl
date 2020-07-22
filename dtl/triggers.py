@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Callable, Any, List
+from typing import Optional, Callable, Any, List, Tuple
 import re
 import random
 
@@ -18,6 +18,8 @@ from dtl.gifs import (
     terraria,
     elon_musk,
     triggered,
+    mmm_mmm_no_no_no,
+    bitconnect2,
 )
 from dtl.consts import ANDREW
 from dtl.util import parse_timer
@@ -61,25 +63,30 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
     def check(keywords, cond=lambda t, k: t == k, reducer=any) -> bool:
         return reducer(map(lambda k: any(map(lambda t: cond(t, k), tokens)), keywords))
 
+    args: Tuple = ([], [])
     if message.content.lower() == "f":
-        return gif_builder([], ["press_f"])
-    if check(["family", "time"], reducer=all):
-        return gif_builder([terraria], ["thonk"])
-    if check(["pizza", "time"]):
-        return gif_builder([pizza_time], ["🍕"])
-    if check(["hack", "cyber"], cond=lambda t, k: t.startswith(k)):
-        return gif_builder([hacker, hackerman, mainframe, hacking_in_progress], ["🤖"])
-    if "trump" in tokens:
-        return gif_builder([best_words], ["🇺🇸", "🦅", "🍔"])
-    if check(["hi", "hey", "hello"]) or bot.user in message.mentions:
-        return gif_builder([hey_gurl, bitconnect, hey_bitch], ["👋"])
-    if check(["elon", "musk", "simulation", "tesla"]):
-        return gif_builder([elon_musk], ["🚭"])
-    if check(["trigger"], cond=lambda t, k: t.startswith(k)):
-        return gif_builder([triggered], ["⚠️", "🚨", "☢️"])
-    if "yikes" in tokens:
-        return gif_builder([], ["😬"])
-    return None
+        args = [], ["press_f"]
+    elif check(["family", "time"], reducer=all):
+        args = [terraria], ["thonk"]
+    elif check(["pizza", "time"]):
+        args = [pizza_time], ["🍕"]
+    elif check(["hack", "cyber"], cond=lambda t, k: t.startswith(k)):
+        args = [hacker, hackerman, mainframe, hacking_in_progress], ["🤖"]
+    elif "trump" in tokens:
+        args = [best_words], ["🇺🇸", "🦅", "🍔"]
+    elif check(["hi", "hey", "hello"]) or bot.user in message.mentions:
+        args = [hey_gurl, bitconnect, hey_bitch], ["👋"]
+    elif check(["elon", "musk", "simulation", "tesla"]):
+        args = [elon_musk], ["🚭"]
+    elif check(["trigger"], cond=lambda t, k: t.startswith(k)):
+        args = [triggered], ["⚠️", "🚨", "☢️"]
+    elif check(["bitcoin", "bitconnect", "dogecoin", "cryptocurrency"]):
+        args = [bitconnect, mmm_mmm_no_no_no, bitconnect2], ["📈"]
+    elif "yikes" in tokens:
+        args = [], ["😬"]
+    else:
+        return None
+    return gif_builder(*args)
 
 
 def shit_bot(_, message) -> Optional[Callable[[Any, Any], None]]:
