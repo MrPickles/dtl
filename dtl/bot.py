@@ -6,14 +6,13 @@ import asyncio as aio
 import discord  # type: ignore
 
 from dtl.consts import TBH_DEBUG_CHANNEL
-from dtl.triggers import aram, giphy_time, shit_bot, so_league
+from dtl.triggers import aram, giphy_time, so_league
 
 logger = logging.getLogger(__name__)
 
 config: List[Callable[[Any, Any], Optional[Callable[[Any, Any], None]]]] = [
     aram,
     giphy_time,
-    shit_bot,
     so_league,
 ]
 

@@ -27,6 +27,33 @@ from dtl.util import parse_timer
 
 logger = logging.getLogger(__name__)
 
+gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] = [
+    (["f"], {}, ([], ["press_f"])),
+    (["family", "time"], {"reducer": all}, ([terraria], ["thonk"])),
+    (["pizza", "time"], {}, ([pizza_time], ["🍕"])),
+    (
+        ["hack", "cyber"],
+        {"cond": (lambda t, k: t.startswith(k))},
+        ([hacker, hackerman, mainframe, hacking_in_progress], ["🤖"]),
+    ),
+    (["trump"], {}, ([best_words], ["🇺🇸", "🦅", "🍔"])),
+    (["hi", "hey", "hello"], {}, ([hey_gurl, bitconnect, hey_bitch], ["👋"])),
+    (["elon", "musk", "simulation", "tesla"], {}, ([elon_musk], ["🚭"])),
+    (
+        ["trigger"],
+        {"cond": (lambda t, k: t.startswith(k))},
+        ([triggered], ["⚠️", "🚨", "☢️"]),
+    ),
+    (
+        ["bitcoin", "bitconnect", "dogecoin", "cryptocurrency"],
+        {},
+        ([bitconnect, mmm_mmm_no_no_no, bitconnect2], ["📈"]),
+    ),
+    (["yikes"], {}, ([], ["😬"])),
+    (["stonk", "stonks"], {}, ([stonks], ["📈"])),
+    (["shit", "bot"], {"reducer": all}, ([], ["feelsbadman"])),
+]
+
 
 def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
     async def metasrc(_, message):
@@ -56,46 +83,19 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
 
         return gif_lambda
 
+    if bot.user in message.mentions:
+        return gif_builder([hey_gurl, bitconnect, hey_bitch], ["👋"])
+
     tokens = re.sub("[^a-z ]", "", message.content.lower()).split(" ")
 
     def check(keywords, cond=lambda t, k: t == k, reducer=any) -> bool:
         return reducer(map(lambda k: any(map(lambda t: cond(t, k), tokens)), keywords))
 
-    args: Tuple = ([], [])
-    if message.content.lower() == "f":
-        args = [], ["press_f"]
-    elif check(["family", "time"], reducer=all):
-        args = [terraria], ["thonk"]
-    elif check(["pizza", "time"]):
-        args = [pizza_time], ["🍕"]
-    elif check(["hack", "cyber"], cond=lambda t, k: t.startswith(k)):
-        args = [hacker, hackerman, mainframe, hacking_in_progress], ["🤖"]
-    elif "trump" in tokens:
-        args = [best_words], ["🇺🇸", "🦅", "🍔"]
-    elif check(["hi", "hey", "hello"]) or bot.user in message.mentions:
-        args = [hey_gurl, bitconnect, hey_bitch], ["👋"]
-    elif check(["elon", "musk", "simulation", "tesla"]):
-        args = [elon_musk], ["🚭"]
-    elif check(["trigger"], cond=lambda t, k: t.startswith(k)):
-        args = [triggered], ["⚠️", "🚨", "☢️"]
-    elif check(["bitcoin", "bitconnect", "dogecoin", "cryptocurrency"]):
-        args = [bitconnect, mmm_mmm_no_no_no, bitconnect2], ["📈"]
-    elif "yikes" in tokens:
-        args = [], ["😬"]
-    elif check(["stonk", "stonks"]):
-        args = [stonks], ["📈"]
-    else:
-        return None
-    return gif_builder(*args)
+    for config in gif_config:
+        keywords, kwargs, args = config
+        if check(keywords, **kwargs):
+            return gif_builder(*args)
 
-
-def shit_bot(_, message) -> Optional[Callable[[Any, Any], None]]:
-    async def shit_bot_reaction(bot, message):
-        await bot.emoji_react(message, "feelsbadman")
-
-    tokens = message.content.lower().split(" ")
-    if all(map(lambda x: x in tokens, ["shit", "bot"])):
-        return shit_bot_reaction
     return None
 
 
