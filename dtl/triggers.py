@@ -20,6 +20,7 @@ from dtl.gifs import (
     triggered,
     mmm_mmm_no_no_no,
     bitconnect2,
+    stonks,
 )
 from dtl.consts import ANDREW
 from dtl.util import parse_timer
@@ -46,17 +47,14 @@ def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
     def gif_builder(gifs: List[str], emojis=None):
         async def gif_lambda(bot, message):
-            bot.reset_rate_limit()
-            if len(gifs) > 0:
+            if len(gifs) > 0 and not bot.is_rate_limited():
+                bot.reset_rate_limit()
                 await message.channel.send(random.choice(gifs))
             if emojis is not None:
                 for emoji in emojis:
                     await bot.emoji_react(message, emoji)
 
         return gif_lambda
-
-    if bot.is_rate_limited():
-        return None
 
     tokens = re.sub("[^a-z ]", "", message.content.lower()).split(" ")
 
@@ -84,6 +82,8 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
         args = [bitconnect, mmm_mmm_no_no_no, bitconnect2], ["📈"]
     elif "yikes" in tokens:
         args = [], ["😬"]
+    elif check(["stonk", "stonks"]):
+        args = [stonks], ["📈"]
     else:
         return None
     return gif_builder(*args)
