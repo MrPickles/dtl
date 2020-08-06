@@ -64,11 +64,19 @@ def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
             await message.channel.send(
                 f"https://www.metasrc.com/aram/champion/{champion}"
             )
+        if tokens[0] == "rgm":
+            url = f"https://www.metasrc.com/blitz/champion/{champion}"
+            if tokens[-1] in ["lane", "jungle"]:
+                role = tokens[-1]
+                champion = "".join(tokens[1:-1])
+                champion = re.sub("[^a-z]", "", champion[:15])
+                url = f"https://www.metasrc.com/blitz/champion/{champion}/{role}"
+            await message.channel.send(url)
         else:
             await message.channel.send(f"https://na.op.gg/champion/{champion}")
 
     tokens = message.content.lower().split(" ")
-    return metasrc if len(tokens) > 1 and tokens[0] in ["aram", "rift"] else None
+    return metasrc if len(tokens) > 1 and tokens[0] in ["aram", "rift", "rgm"] else None
 
 
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
@@ -100,11 +108,13 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
 
 
 def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
+    game = "League"
+
     async def league_reminder(bot, message):
         await bot.emoji_react(message)
-        league = await bot.emoji(message, "league")
+        emoji = await bot.emoji(message, game.lower())
         await message.channel.send(
-            f"Hello @here! :wave: {message.author.mention} would like to play some League! {league}"
+            f"Hello @here! :wave: {message.author.mention} would like to play some {game}! {emoji}"
         )
         if message.author.id == ANDREW:
             await message.channel.send(
@@ -125,5 +135,8 @@ def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
         return None
     tokens = message.content[:-1].lower().split(" ")
     if any(map(lambda x: x in tokens, ["sl", "dtl"])):
+        return league_reminder
+    if any(map(lambda x: x in tokens, ["sv", "dtv"])):
+        game = "Valorant"
         return league_reminder
     return None
