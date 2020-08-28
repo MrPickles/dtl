@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 
 gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] = [
     (["f"], {}, ([], ["press_f"])),
+    (["nice"], {}, ([], ["nice"])),
     (["family", "time"], {"reducer": all}, ([terraria], ["thonk"])),
     (["pizza", "time"], {}, ([pizza_time], ["🍕"])),
     (
@@ -52,6 +53,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["yikes"], {}, ([], ["😬"])),
     (["stonk", "stonks"], {}, ([stonks], ["📈"])),
     (["shit", "bot"], {"reducer": all}, ([], ["feelsbadman"])),
+    (["good", "bot"], {"reducer": all}, ([], ["feelsgoodman"])),
 ]
 
 

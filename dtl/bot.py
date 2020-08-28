@@ -2,6 +2,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import Optional, List, Callable, Any
 import asyncio as aio
+import random
 
 import discord  # type: ignore
 
@@ -23,6 +24,7 @@ class LeagueBot(discord.Client):
         self.debug = debug
         self.pending_reminder: Optional[aio.Task] = None
         self.rate_limit: datetime = datetime.utcfromtimestamp(0)
+        random.seed()
 
     async def on_ready(self):
         logger.info("Logged in as %s with ID %s", self.user.name, self.user.id)
