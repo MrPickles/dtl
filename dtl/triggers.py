@@ -66,7 +66,7 @@ def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
             await message.channel.send(
                 f"https://www.metasrc.com/aram/champion/{champion}"
             )
-        if tokens[0] == "rgm":
+        elif tokens[0] == "rgm":
             url = f"https://www.metasrc.com/blitz/champion/{champion}"
             if tokens[-1] in ["lane", "jungle"]:
                 role = tokens[-1]
