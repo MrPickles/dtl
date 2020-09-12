@@ -1,4 +1,7 @@
 pizza_time = "https://tenor.com/bgq1G.gif"
+troy_pizza_time = (
+    "https://media1.tenor.com/images/fcf5177d22199e1235bbbb1a4cab7fe7/tenor.gif"
+)
 hacker = "https://giphy.com/gifs/YQitE4YNQNahy"
 hackerman = "https://giphy.com/gifs/hacker-MM0Jrc8BHKx3y"
 mainframe = "https://giphy.com/gifs/hackers-mainframe-waywaw-TOWeGr70V2R1K"

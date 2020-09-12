@@ -7,6 +7,7 @@ from humanize import naturaldelta  # type: ignore
 
 from dtl.gifs import (
     pizza_time,
+    troy_pizza_time,
     hacker,
     hackerman,
     mainframe,
@@ -31,7 +32,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["f"], {}, ([], ["press_f"])),
     (["nice"], {}, ([], ["nice"])),
     (["family", "time"], {"reducer": all}, ([terraria], ["thonk"])),
-    (["pizza", "time"], {}, ([pizza_time], ["🍕"])),
+    (["pizza", "time"], {}, ([pizza_time, troy_pizza_time], ["🍕"])),
     (
         ["hack", "cyber"],
         {"cond": (lambda t, k: t.startswith(k))},
@@ -67,7 +68,9 @@ def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
                 f"https://www.metasrc.com/aram/champion/{champion}"
             )
         elif tokens[0] == "rgm":
-            await message.channel.send(f"https://www.metasrc.com/ofa/champion/{champion}")
+            await message.channel.send(
+                f"https://www.metasrc.com/ofa/champion/{champion}"
+            )
         else:
             await message.channel.send(f"https://na.op.gg/champion/{champion}")
 
