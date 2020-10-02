@@ -63,19 +63,10 @@ def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
         tokens = message.content.lower().split(" ")
         champion = "".join(tokens[1:])
         champion = re.sub("[^a-z]", "", champion[:15])
-        if tokens[0] == "aram":
-            await message.channel.send(
-                f"https://www.metasrc.com/aram/champion/{champion}"
-            )
-        elif tokens[0] == "rgm":
-            await message.channel.send(
-                f"https://www.metasrc.com/ofa/champion/{champion}"
-            )
-        else:
-            await message.channel.send(f"https://na.op.gg/champion/{champion}")
+        await message.channel.send(f"https://www.metasrc.com/{tokens[0]}/champion/{champion}")
 
     tokens = message.content.lower().split(" ")
-    return metasrc if len(tokens) > 1 and tokens[0] in ["aram", "rift", "rgm"] else None
+    return metasrc if len(tokens) > 1 and tokens[0] in ["aram", "rift", "ofa", "urf", "blitz"] else None
 
 
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
