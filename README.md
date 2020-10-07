@@ -1,4 +1,4 @@
-# SL? Are you DTL?
+# League Bot
 
 This is a Discord bot that mercilessly pings people when playing League of
 Legends.
