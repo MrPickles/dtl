@@ -12,7 +12,7 @@ from dtl.gifs import (
     hackerman,
     mainframe,
     hacking_in_progress,
-    hey_gurl,
+    hayasaka,
     best_words,
     bitconnect,
     hey_bitch,
@@ -22,14 +22,18 @@ from dtl.gifs import (
     mmm_mmm_no_no_no,
     bitconnect2,
     stonks,
+    very_nice,
+    nice_to_meet_you,
 )
 from dtl.consts import ANDREW
 from dtl.util import parse_timer
 
 logger = logging.getLogger(__name__)
 
+greeting_gifs = [nice_to_meet_you, hayasaka, bitconnect, hey_bitch]
 gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] = [
     (["f"], {}, ([], ["press_f"])),
+    (["very", "nice"], {"reducer": all}, ([very_nice], ["nice"])),
     (["nice"], {}, ([], ["nice"])),
     (["family", "time"], {"reducer": all}, ([terraria], ["thonk"])),
     (["pizza", "time"], {}, ([pizza_time, troy_pizza_time], ["🍕"])),
@@ -39,7 +43,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
         ([hacker, hackerman, mainframe, hacking_in_progress], ["🤖"]),
     ),
     (["trump"], {}, ([best_words], ["🇺🇸", "🦅", "🍔"])),
-    (["hi", "hey", "hello"], {}, ([hey_gurl, bitconnect, hey_bitch], ["👋"])),
+    (["hi", "hey", "hello"], {}, (greeting_gifs, ["👋"])),
     (["elon", "musk", "simulation", "tesla"], {}, ([elon_musk], ["🚭"])),
     (
         ["trigger"],
@@ -63,10 +67,16 @@ def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
         tokens = message.content.lower().split(" ")
         champion = "".join(tokens[1:])
         champion = re.sub("[^a-z]", "", champion[:15])
-        await message.channel.send(f"https://www.metasrc.com/{tokens[0]}/champion/{champion}")
+        await message.channel.send(
+            f"https://www.metasrc.com/{tokens[0]}/champion/{champion}"
+        )
 
     tokens = message.content.lower().split(" ")
-    return metasrc if len(tokens) > 1 and tokens[0] in ["aram", "rift", "ofa", "urf", "blitz"] else None
+    return (
+        metasrc
+        if len(tokens) > 1 and tokens[0] in ["aram", "rift", "ofa", "urf", "blitz"]
+        else None
+    )
 
 
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
@@ -82,7 +92,7 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
         return gif_lambda
 
     if bot.user in message.mentions:
-        return gif_builder([hey_gurl, bitconnect, hey_bitch], ["👋"])
+        return gif_builder(greeting_gifs, ["👋"])
 
     tokens = re.sub("[^a-z ]", "", message.content.lower()).split(" ")
 
