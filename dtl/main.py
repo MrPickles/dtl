@@ -14,6 +14,10 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO)
 
+    if token is None:
+        logger.error("Specify a token you silly!")
+        exit(1)
+
     bot = LeagueBot(debug)
     logger.info("Starting bot!")
     bot.run(token)
