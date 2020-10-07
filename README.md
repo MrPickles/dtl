@@ -8,7 +8,7 @@ Legends.
 1. Install [Poetry](https://python-poetry.org/).
 2. Install dependencies. `poetry install`
 3. Put secrets in `.env`.
-4. Run the server. `poetry run python -m dtl.main`
+4. Run the server. `poetry run bot`
 5. If you want to make commits, please install the precommit hooks.
    `poetry run pre-commit install`
 
