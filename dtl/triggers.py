@@ -24,6 +24,7 @@ from dtl.gifs import (
     stonks,
     very_nice,
     nice_to_meet_you,
+    cheesesteak,
 )
 from dtl.consts import ANDREW
 from dtl.util import parse_timer
@@ -59,6 +60,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["stonk", "stonks"], {}, ([stonks], ["📈"])),
     (["shit", "bot"], {"reducer": all}, ([], ["feelsbadman"])),
     (["good", "bot"], {"reducer": all}, ([], ["feelsgoodman"])),
+    (["joe", "cheesesteak", "philly"], {}, ([cheesesteak], [])),
 ]
 
 
