@@ -3,6 +3,7 @@ from typing import Optional, Callable, Any, List, Tuple
 import re
 import random
 
+import discord  # type: ignore
 from humanize import naturaldelta  # type: ignore
 
 from dtl.gifs import (
@@ -26,7 +27,7 @@ from dtl.gifs import (
     nice_to_meet_you,
     cheesesteak_joe,
 )
-from dtl.consts import ANDREW
+from dtl.consts import ANDREW, TBH_DEBUG_CHANNEL, TBH_SUMMONER_ROLE, TBH_GENERAL_CHANNEL
 from dtl.util import parse_timer
 
 logger = logging.getLogger(__name__)
@@ -112,11 +113,25 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
 def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
     game = "League"
 
+    def mention_for_channel(message) -> str:
+        mention_map = {
+            TBH_DEBUG_CHANNEL: TBH_SUMMONER_ROLE,
+            TBH_GENERAL_CHANNEL: TBH_SUMMONER_ROLE,
+        }
+        if message.channel.id in mention_map:
+            role_id = mention_map[message.channel.id]
+            role = discord.utils.get(message.guild.roles, id=role_id)
+            if role is not None:
+                return role.mention
+            logger.warning("Fetching role ID %d failed!", role_id)
+        return "@here"
+
     async def league_reminder(bot, message):
         await bot.emoji_react(message)
         emoji = await bot.emoji(message, game.lower())
+        mention = mention_for_channel(message)
         await message.channel.send(
-            f"Hello @here! :wave: {message.author.mention} would like to play some {game}! {emoji}"
+            f"Hello {mention}! :wave: {message.author.mention} would like to play some {game}! {emoji}"
         )
         if message.author.id == ANDREW:
             await message.channel.send(
