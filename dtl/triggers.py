@@ -26,6 +26,7 @@ from dtl.gifs import (
     very_nice,
     nice_to_meet_you,
     cheesesteak_joe,
+    time_to_stop,
 )
 from dtl.consts import ANDREW, TBH_DEBUG_CHANNEL, TBH_SUMMONER_ROLE, TBH_GENERAL_CHANNEL
 from dtl.util import parse_timer
@@ -38,7 +39,12 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["very", "nice"], {"reducer": all}, ([very_nice], ["nice"])),
     (["nice"], {}, ([], ["nice"])),
     (["family", "time"], {"reducer": all}, ([terraria], ["thonk"])),
-    (["pizza", "time"], {}, ([pizza_time, troy_pizza_time], ["🍕"])),
+    (["pizza"], {}, ([pizza_time, troy_pizza_time], ["🍕"])),
+    (
+        ["time"],
+        {"cond": (lambda t, k: t == k and random.random() < 0.1)},
+        ([time_to_stop], ["🕓"]),
+    ),
     (
         ["hack", "cyber"],
         {"cond": (lambda t, k: t.startswith(k))},
