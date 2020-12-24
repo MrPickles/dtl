@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import logging
 from typing import Optional, Callable, Any, List, Tuple
 import re
@@ -88,12 +89,26 @@ def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
     )
 
 
+def silence(_, message) -> Optional[Callable[[Any, Any], None]]:
+    async def silence_bot(bot, _):
+        if bot.last_gif_msg is not None:
+            await bot.last_gif_msg.delete()
+            bot.last_gif_msg = None
+            bot.reset_rate_limit(datetime.now() + timedelta(minutes=10))
+            await message.channel.send(
+                "Sorry about that. I won't send gifs for the next 10 minutes. 😓"
+            )
+        await bot.emoji_react(message, "feelsbadman")
+
+    return silence_bot if message.content.lower() == "shut up bot" else None
+
+
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
     def gif_builder(gifs: List[str], emojis=None):
         async def gif_lambda(bot, message):
             if len(gifs) > 0 and not bot.is_rate_limited():
                 bot.reset_rate_limit()
-                await message.channel.send(random.choice(gifs))
+                bot.last_gif_msg = await message.channel.send(random.choice(gifs))
             if emojis is not None:
                 for emoji in emojis:
                     await bot.emoji_react(message, emoji)

@@ -7,11 +7,12 @@ import random
 import discord  # type: ignore
 
 from dtl.consts import TBH_DEBUG_CHANNEL
-from dtl.triggers import aram, giphy_time, so_league
+from dtl.triggers import aram, giphy_time, so_league, silence
 
 logger = logging.getLogger(__name__)
 
 config: List[Callable[[Any, Any], Optional[Callable[[Any, Any], None]]]] = [
+    silence,
     aram,
     giphy_time,
     so_league,
@@ -24,6 +25,7 @@ class LeagueBot(discord.Client):
         self.debug = debug
         self.pending_reminder: Optional[aio.Task] = None
         self.rate_limit: datetime = datetime.utcfromtimestamp(0)
+        self.last_gif_msg = None
         random.seed()
 
     async def on_ready(self):
@@ -50,8 +52,8 @@ class LeagueBot(discord.Client):
             limit = 2
         return (datetime.now() - self.rate_limit).total_seconds() < limit
 
-    def reset_rate_limit(self) -> None:
-        self.rate_limit = datetime.now()
+    def reset_rate_limit(self, when: datetime = datetime.now()) -> None:
+        self.rate_limit = when
 
     async def remind_about_league(
         self, duration: timedelta, callback, on_cancelled=None
