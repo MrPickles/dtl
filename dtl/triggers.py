@@ -10,12 +10,7 @@ from humanize import naturaldelta  # type: ignore
 from dtl.gifs import (
     pizza_time,
     troy_pizza_time,
-    hacker,
-    hackerman,
-    mainframe,
-    hacking_in_progress,
     hayasaka,
-    best_words,
     bitconnect,
     hey_bitch,
     terraria,
@@ -27,7 +22,6 @@ from dtl.gifs import (
     very_nice,
     nice_to_meet_you,
     cheesesteak_joe,
-    time_to_stop,
 )
 from dtl.consts import ANDREW, TBH_DEBUG_CHANNEL, TBH_SUMMONER_ROLE, TBH_GENERAL_CHANNEL
 from dtl.util import parse_timer
@@ -41,18 +35,6 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["nice"], {}, ([], ["nice"])),
     (["family", "time"], {"reducer": all}, ([terraria], ["thonk"])),
     (["pizza"], {}, ([pizza_time, troy_pizza_time], ["🍕"])),
-    (
-        ["time"],
-        {"cond": (lambda t, k: t == k and random.random() < 0.1)},
-        ([time_to_stop], ["🕓"]),
-    ),
-    (
-        ["hack", "cyber"],
-        {"cond": (lambda t, k: t.startswith(k))},
-        ([hacker, hackerman, mainframe, hacking_in_progress], ["🤖"]),
-    ),
-    (["trump"], {}, ([best_words], ["🇺🇸", "🦅", "🍔"])),
-    (["hi", "hey", "hello"], {}, (greeting_gifs, ["👋"])),
     (["elon", "musk", "simulation", "tesla"], {}, ([elon_musk], ["🚭"])),
     (
         ["trigger"],
@@ -94,9 +76,9 @@ def silence(_, message) -> Optional[Callable[[Any, Any], None]]:
         if bot.last_gif_msg is not None:
             await bot.last_gif_msg.delete()
             bot.last_gif_msg = None
-            bot.reset_rate_limit(datetime.now() + timedelta(minutes=10))
+            bot.reset_rate_limit(datetime.now() + timedelta(hours=1))
             await message.channel.send(
-                "Sorry about that. I won't send gifs for the next 10 minutes. 😓"
+                "Sorry about that. I won't send gifs for the next hour. 😓"
             )
         await bot.emoji_react(message, "feelsbadman")
 

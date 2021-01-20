@@ -47,7 +47,7 @@ class LeagueBot(discord.Client):
                 await action(self, message)
                 return
 
-    def is_rate_limited(self, limit: int = 300) -> bool:
+    def is_rate_limited(self, limit: int = 900) -> bool:
         if self.debug:
             limit = 2
         return (datetime.now() - self.rate_limit).total_seconds() < limit
