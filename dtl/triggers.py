@@ -73,7 +73,7 @@ def censor(_, message) -> Optional[Callable[[Any, Any], None]]:
         target_channel = POLITICS_CHANNEL
     elif bool(set(["raid", "shiny"]) & tokens):
         target_channel = POGO_CHANNEL
-    elif bool(set(["gme", "stocks", "moon", "gamestop"]) & tokens):
+    elif bool(set(["gme", "stocks", "moon", "gamestop", "tsla"]) & tokens):
         target_channel = STONKS_CHANNEL
 
     if target_channel is None:
