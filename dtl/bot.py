@@ -7,11 +7,12 @@ import random
 import discord  # type: ignore
 
 from dtl.consts import TBH_DEBUG_CHANNEL
-from dtl.triggers import aram, giphy_time, so_league, silence
+from dtl.triggers import aram, giphy_time, so_league, silence, censor
 
 logger = logging.getLogger(__name__)
 
 config: List[Callable[[Any, Any], Optional[Callable[[Any, Any], None]]]] = [
+    censor,
     silence,
     aram,
     giphy_time,

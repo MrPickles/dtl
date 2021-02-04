@@ -23,7 +23,17 @@ from dtl.gifs import (
     nice_to_meet_you,
     cheesesteak_joe,
 )
-from dtl.consts import ANDREW, TBH_DEBUG_CHANNEL, TBH_SUMMONER_ROLE, TBH_GENERAL_CHANNEL
+from dtl.consts import (
+    ANDREW,
+    TBH_DEBUG_CHANNEL,
+    TBH_SUMMONER_ROLE,
+    TBH_GENERAL_CHANNEL,
+    STONKS_CHANNEL,
+    POGO_CHANNEL,
+    POLITICS_CHANNEL,
+    SUITE_GENERAL,
+)
+
 from dtl.util import parse_timer
 
 logger = logging.getLogger(__name__)
@@ -52,6 +62,30 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["good", "bot"], {"reducer": all}, ([], ["feelsgoodman"])),
     (["cheesesteak", "philly"], {}, ([cheesesteak_joe], [])),
 ]
+
+
+def censor(_, message) -> Optional[Callable[[Any, Any], None]]:
+    if message.channel.id != SUITE_GENERAL:
+        return None
+    tokens = set(message.content.lower().split(" "))
+    target_channel = None
+    if bool(set(["trump", "biden", "aoc", "antifa"]) & tokens):
+        target_channel = POLITICS_CHANNEL
+    elif bool(set(["raid", "shiny"]) & tokens):
+        target_channel = POGO_CHANNEL
+    elif bool(set(["gme", "stocks", "moon"]) & tokens):
+        target_channel = STONKS_CHANNEL
+
+    if target_channel is None:
+        return None
+
+    async def safe_space(bot, message):
+        suggested_channel = bot.get_channel(target_channel)
+        await message.channel.send(
+            f"This channel is a safe space! Consider talking in {suggested_channel.mention} instead."
+        )
+
+    return safe_space
 
 
 def aram(_, message) -> Optional[Callable[[Any, Any], None]]:
