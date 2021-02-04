@@ -29,9 +29,9 @@ from dtl.consts import (
     TBH_SUMMONER_ROLE,
     TBH_GENERAL_CHANNEL,
     STONKS_CHANNEL,
+    SUITE_GENERAL_CHANNEL,
     POGO_CHANNEL,
     POLITICS_CHANNEL,
-    SUITE_GENERAL,
 )
 
 from dtl.util import parse_timer
@@ -65,7 +65,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
 
 
 def censor(_, message) -> Optional[Callable[[Any, Any], None]]:
-    if message.channel.id != SUITE_GENERAL:
+    if message.channel.id not in [SUITE_GENERAL_CHANNEL, TBH_DEBUG_CHANNEL]:
         return None
     tokens = set(message.content.lower().split(" "))
     target_channel = None
@@ -73,7 +73,7 @@ def censor(_, message) -> Optional[Callable[[Any, Any], None]]:
         target_channel = POLITICS_CHANNEL
     elif bool(set(["raid", "shiny"]) & tokens):
         target_channel = POGO_CHANNEL
-    elif bool(set(["gme", "stocks", "moon"]) & tokens):
+    elif bool(set(["gme", "stocks", "moon", "gamestop"]) & tokens):
         target_channel = STONKS_CHANNEL
 
     if target_channel is None:
@@ -82,7 +82,7 @@ def censor(_, message) -> Optional[Callable[[Any, Any], None]]:
     async def safe_space(bot, message):
         suggested_channel = bot.get_channel(target_channel)
         await message.channel.send(
-            f"This channel is a safe space! Consider talking in {suggested_channel.mention} instead."
+            f":rotating_light: This channel is a safe space! Consider talking in {suggested_channel.mention} instead. :rotating_light:"
         )
 
     return safe_space
