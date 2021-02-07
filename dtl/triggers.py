@@ -22,6 +22,7 @@ from dtl.gifs import (
     very_nice,
     nice_to_meet_you,
     cheesesteak_joe,
+    chainwax,
 )
 from dtl.consts import (
     ANDREW,
@@ -61,6 +62,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["shit", "bot"], {"reducer": all}, ([], ["feelsbadman"])),
     (["good", "bot"], {"reducer": all}, ([], ["feelsgoodman"])),
     (["cheesesteak", "philly"], {}, ([cheesesteak_joe], [])),
+    (["pussy", "chainwax", "chain"], {}, ([chainwax], [])),
 ]
 
 
