@@ -23,6 +23,8 @@ from dtl.gifs import (
     nice_to_meet_you,
     cheesesteak_joe,
     chainwax,
+    lets_play_catan,
+    catan_ragequit,
 )
 from dtl.consts import (
     ANDREW,
@@ -44,7 +46,11 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["f"], {}, ([], ["press_f"])),
     (["very", "nice"], {"reducer": all}, ([very_nice], ["nice"])),
     (["nice"], {}, ([], ["nice"])),
-    (["family", "time"], {"reducer": all}, ([terraria], ["thonk"])),
+    (
+        ["family", "time"],
+        {"reducer": all},
+        ([terraria, lets_play_catan, catan_ragequit], ["thonk"]),
+    ),
     (["pizza"], {}, ([pizza_time, troy_pizza_time], ["🍕"])),
     (["elon", "musk", "simulation", "tesla"], {}, ([elon_musk], ["🚭"])),
     (
