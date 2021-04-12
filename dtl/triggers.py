@@ -25,6 +25,7 @@ from dtl.gifs import (
     chainwax,
     lets_play_catan,
     catan_ragequit,
+    calm_down,
 )
 from dtl.consts import (
     ANDREW,
@@ -175,13 +176,16 @@ def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
         await bot.emoji_react(message)
         emoji = await bot.emoji(message, game.lower())
         mention = mention_for_channel(message)
+
+        if message.author.id == ANDREW:
+            await message.channel.send(
+                "Andrew has a gaming addiction. Let's have someone else suggest playing games..."
+            )
+            await message.channel.send(calm_down)
+            return
         await message.channel.send(
             f"Hello {mention}! :wave: {message.author.mention} would like to play some {game}! {emoji}"
         )
-        if message.author.id == ANDREW:
-            await message.channel.send(
-                "Oh look, Andrew pinged me. Hi daddy! :heart: :heart: :heart:"
-            )
         timediff = parse_timer(message.content)
         if timediff is not None:
 
