@@ -26,6 +26,7 @@ from dtl.gifs import (
     lets_play_catan,
     catan_ragequit,
     calm_down,
+    not_stonks,
 )
 from dtl.consts import (
     ANDREW,
@@ -46,6 +47,7 @@ greeting_gifs = [nice_to_meet_you, hayasaka, bitconnect, hey_bitch]
 gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] = [
     (["f"], {}, ([], ["press_f"])),
     (["very", "nice"], {"reducer": all}, ([very_nice], ["nice"])),
+    (["not", "stonks"], {"reducer": all}, ([not_stonks], ["📉"])),
     (["nice"], {}, ([], ["nice"])),
     (
         ["family", "time"],
