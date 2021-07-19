@@ -131,7 +131,7 @@ def silence(_, message) -> Optional[Callable[[Any, Any], None]]:
 
 
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
-    def gif_builder(gifs: List[str], emojis=None):
+    def gif_builder(gifs: List[str], emojis: List[str] = None):
         async def gif_lambda(bot, message):
             if len(gifs) > 0 and not bot.is_rate_limited():
                 bot.reset_rate_limit()
@@ -144,6 +144,9 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
 
     if bot.user in message.mentions:
         return gif_builder(greeting_gifs, ["👋"])
+
+    if "69" in message.content:
+        return gif_builder([], ["nice"])
 
     tokens = re.sub("[^a-z ]", "", message.content.lower()).split(" ")
 
