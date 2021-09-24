@@ -156,12 +156,6 @@ def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
         emoji = await bot.emoji(message, game.lower())
         mention = mention_for_channel(message)
 
-        if message.author.id == consts.ANDREW:
-            await message.channel.send(
-                "Andrew has a gaming addiction. Let's have someone else suggest playing games..."
-            )
-            await message.channel.send(gif.calm_down)
-            return
         await message.channel.send(
             f"Hello {mention}! :wave: {message.author.mention} would like to play some {game}! {emoji}"
         )
