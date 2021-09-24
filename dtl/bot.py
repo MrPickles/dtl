@@ -51,7 +51,24 @@ class LeagueBot(discord.Client):
     def is_rate_limited(self, limit: int = 900) -> bool:
         if self.debug:
             limit = 2
-        return (datetime.now() - self.rate_limit).total_seconds() < limit
+        now = datetime.now()
+        duration = (now - self.rate_limit).total_seconds()
+        rate_limited = duration < limit
+        logger.info(
+            """
+            Last rate limit:      %s
+            Current time:         %s
+            Time diff in seconds: %d
+            Rate limit seconds:   %d
+
+            Rate limited? %s""",
+            str(now),
+            str(self.rate_limit),
+            duration,
+            limit,
+            str(rate_limited),
+        )
+        return rate_limited
 
     def reset_rate_limit(self, when: datetime = datetime.now()) -> None:
         self.rate_limit = when
