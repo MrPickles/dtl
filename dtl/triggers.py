@@ -7,85 +7,59 @@ import random
 import discord  # type: ignore
 from humanize import naturaldelta  # type: ignore
 
-from dtl.gifs import (
-    pizza_time,
-    troy_pizza_time,
-    hayasaka,
-    bitconnect,
-    hey_bitch,
-    terraria,
-    elon_musk,
-    triggered,
-    mmm_mmm_no_no_no,
-    bitconnect2,
-    stonks,
-    very_nice,
-    nice_to_meet_you,
-    cheesesteak_joe,
-    chainwax,
-    lets_play_catan,
-    catan_ragequit,
-    calm_down,
-    not_stonks,
-)
-from dtl.consts import (
-    ANDREW,
-    TBH_DEBUG_CHANNEL,
-    TBH_SUMMONER_ROLE,
-    TBH_GENERAL_CHANNEL,
-    STONKS_CHANNEL,
-    SUITE_GENERAL_CHANNEL,
-    POGO_CHANNEL,
-    POLITICS_CHANNEL,
-)
+import dtl.gifs as gif
+import dtl.consts as consts
 
 from dtl.util import parse_timer
 
 logger = logging.getLogger(__name__)
 
-greeting_gifs = [nice_to_meet_you, hayasaka, bitconnect, hey_bitch]
+greeting_gifs = [gif.nice_to_meet_you, gif.hayasaka, gif.bitconnect, gif.hey_bitch]
 gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] = [
     (["f"], {}, ([], ["press_f"])),
-    (["very", "nice"], {"reducer": all}, ([very_nice], ["nice"])),
-    (["not", "stonks"], {"reducer": all}, ([not_stonks], ["📉"])),
+    (["very", "nice"], {"reducer": all}, ([gif.very_nice], ["nice"])),
+    (["not", "stonks"], {"reducer": all}, ([gif.not_stonks], ["📉"])),
     (["nice"], {}, ([], ["nice"])),
     (
         ["family", "time"],
         {"reducer": all},
-        ([terraria, lets_play_catan, catan_ragequit], ["thonk"]),
+        ([gif.terraria, gif.lets_play_catan, gif.catan_ragequit], ["thonk"]),
     ),
-    (["pizza"], {}, ([pizza_time, troy_pizza_time], ["🍕"])),
-    (["elon", "musk", "simulation", "tesla"], {}, ([elon_musk], ["🚭"])),
+    (["pizza"], {}, ([gif.pizza_time, gif.troy_pizza_time], ["🍕"])),
+    (["elon", "musk", "simulation", "tesla"], {}, ([gif.elon_musk], ["🚭"])),
     (
         ["trigger"],
         {"cond": (lambda t, k: t.startswith(k))},
-        ([triggered], ["⚠️", "🚨", "☢️"]),
+        ([gif.triggered], ["⚠️", "🚨", "☢️"]),
     ),
     (
         ["bitcoin", "bitconnect", "dogecoin", "cryptocurrency"],
         {},
-        ([bitconnect, mmm_mmm_no_no_no, bitconnect2], ["📈"]),
+        ([gif.bitconnect, gif.mmm_mmm_no_no_no, gif.bitconnect2], ["📈"]),
     ),
     (["yikes"], {}, ([], ["😬"])),
-    (["stonk", "stonks"], {}, ([stonks], ["📈"])),
+    (["stonk", "stonks"], {}, ([gif.stonks], ["📈"])),
     (["shit", "bot"], {"reducer": all}, ([], ["feelsbadman"])),
     (["good", "bot"], {"reducer": all}, ([], ["feelsgoodman"])),
-    (["cheesesteak", "philly"], {}, ([cheesesteak_joe], [])),
-    (["pussy", "chainwax", "chain"], {}, ([chainwax], [])),
+    (["cheesesteak", "philly"], {}, ([gif.cheesesteak_joe], [])),
+    (["pussy", "chainwax", "chain"], {}, ([gif.chainwax], [])),
 ]
 
 
 def censor(_, message) -> Optional[Callable[[Any, Any], None]]:
-    if message.channel.id not in [SUITE_GENERAL_CHANNEL, TBH_DEBUG_CHANNEL]:
+    if message.channel.id not in [
+        consts.SUITE_GENERAL_CHANNEL,
+        consts.TBH_DEBUG_CHANNEL,
+    ]:
         return None
     tokens = set(message.content.lower().split(" "))
     target_channel = None
     if bool(set(["trump", "biden", "aoc", "antifa"]) & tokens):
-        target_channel = POLITICS_CHANNEL
+        target_channel = consts.POLITICS_CHANNEL
     elif bool(set(["raid", "shiny"]) & tokens):
-        target_channel = POGO_CHANNEL
+        target_channel = consts.POGO_CHANNEL
     elif bool(set(["gme", "stocks", "moon", "gamestop", "tsla"]) & tokens):
-        target_channel = STONKS_CHANNEL
+        target_channel = consts.STONKS_CHANNEL
 
     if target_channel is None:
         return None
@@ -166,8 +140,8 @@ def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
 
     def mention_for_channel(message) -> str:
         mention_map = {
-            TBH_DEBUG_CHANNEL: TBH_SUMMONER_ROLE,
-            TBH_GENERAL_CHANNEL: TBH_SUMMONER_ROLE,
+            consts.TBH_DEBUG_CHANNEL: consts.TBH_SUMMONER_ROLE,
+            consts.TBH_GENERAL_CHANNEL: consts.TBH_SUMMONER_ROLE,
         }
         if message.channel.id in mention_map:
             role_id = mention_map[message.channel.id]
@@ -182,11 +156,11 @@ def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
         emoji = await bot.emoji(message, game.lower())
         mention = mention_for_channel(message)
 
-        if message.author.id == ANDREW:
+        if message.author.id == consts.ANDREW:
             await message.channel.send(
                 "Andrew has a gaming addiction. Let's have someone else suggest playing games..."
             )
-            await message.channel.send(calm_down)
+            await message.channel.send(gif.calm_down)
             return
         await message.channel.send(
             f"Hello {mention}! :wave: {message.author.mention} would like to play some {game}! {emoji}"
