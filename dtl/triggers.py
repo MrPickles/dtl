@@ -43,6 +43,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["good", "bot"], {"reducer": all}, ([], ["feelsgoodman"])),
     (["cheesesteak", "philly"], {}, ([gif.cheesesteak_joe], [])),
     (["pussy", "chainwax", "chain"], {}, ([gif.chainwax], [])),
+    (["zaddy"], {}, ([gif.zaddy], [])),
 ]
 
 
