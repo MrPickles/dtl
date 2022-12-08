@@ -44,6 +44,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["cheesesteak", "philly"], {}, ([gif.cheesesteak_joe], [])),
     (["pussy", "chainwax", "chain"], {}, ([gif.chainwax], [])),
     (["zaddy"], {}, ([gif.zaddy], [])),
+    (["cukier"], {}, ([gif.are_you_sure], ["thonk"])),
 ]
 
 
