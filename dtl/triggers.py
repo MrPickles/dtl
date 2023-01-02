@@ -4,47 +4,50 @@ from typing import Optional, Callable, Any, List, Tuple
 import re
 import random
 
+# pylint: disable=import-error
 import discord  # type: ignore
+
+# pylint: disable=import-error
 from humanize import naturaldelta  # type: ignore
 
-import dtl.gifs as gif
-import dtl.consts as consts
+from dtl import consts, gifs
 
 from dtl.util import parse_timer
 
 logger = logging.getLogger(__name__)
 
-greeting_gifs = [gif.nice_to_meet_you, gif.hayasaka, gif.bitconnect, gif.hey_bitch]
+greeting_gifs = [gifs.nice_to_meet_you, gifs.hayasaka, gifs.bitconnect, gifs.hey_bitch]
 gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] = [
     (["f"], {}, ([], ["press_f"])),
-    (["very", "nice"], {"reducer": all}, ([gif.very_nice], ["nice"])),
-    (["not", "stonks"], {"reducer": all}, ([gif.not_stonks], ["📉"])),
+    (["very", "nice"], {"reducer": all}, ([gifs.very_nice], ["nice"])),
+    (["not", "stonks"], {"reducer": all}, ([gifs.not_stonks], ["📉"])),
     (["nice"], {}, ([], ["nice"])),
     (
         ["family", "time"],
         {"reducer": all},
-        ([gif.terraria, gif.lets_play_catan, gif.catan_ragequit], ["thonk"]),
+        ([gifs.terraria, gifs.lets_play_catan, gifs.catan_ragequit], ["thonk"]),
     ),
-    (["pizza"], {}, ([gif.pizza_time, gif.troy_pizza_time], ["🍕"])),
-    (["elon", "musk", "simulation", "tesla"], {}, ([gif.elon_musk], ["🚭"])),
+    (["pizza"], {}, ([gifs.pizza_time, gifs.troy_pizza_time], ["🍕"])),
+    (["elon", "musk", "simulation", "tesla"], {}, ([gifs.elon_musk], ["🚭"])),
     (
         ["trigger"],
         {"cond": (lambda t, k: t.startswith(k))},
-        ([gif.triggered], ["⚠️", "🚨", "☢️"]),
+        ([gifs.triggered], ["⚠️", "🚨", "☢️"]),
     ),
     (
         ["bitcoin", "bitconnect", "dogecoin", "cryptocurrency"],
         {},
-        ([gif.bitconnect, gif.mmm_mmm_no_no_no, gif.bitconnect2], ["📈"]),
+        ([gifs.bitconnect, gifs.mmm_mmm_no_no_no, gifs.bitconnect2], ["📈"]),
     ),
     (["yikes"], {}, ([], ["😬"])),
-    (["stonk", "stonks"], {}, ([gif.stonks], ["📈"])),
+    (["stonk", "stonks"], {}, ([gifs.stonks], ["📈"])),
     (["shit", "bot"], {"reducer": all}, ([], ["feelsbadman"])),
     (["good", "bot"], {"reducer": all}, ([], ["feelsgoodman"])),
-    (["cheesesteak", "philly"], {}, ([gif.cheesesteak_joe], [])),
-    (["pussy", "chainwax", "chain"], {}, ([gif.chainwax], [])),
-    (["zaddy"], {}, ([gif.zaddy], [])),
-    (["cukier"], {}, ([gif.are_you_sure], ["thonk"])),
+    (["cheesesteak", "philly"], {}, ([gifs.cheesesteak_joe], [])),
+    (["pussy", "chainwax", "chain"], {}, ([gifs.chainwax], [])),
+    (["zaddy"], {}, ([gifs.zaddy], [])),
+    (["cukier"], {}, ([gifs.are_you_sure], ["thonk"])),
+    (["aladeen"], {}, ([gifs.aladeen], [])),
 ]
 
 
@@ -107,11 +110,13 @@ def silence(_, message) -> Optional[Callable[[Any, Any], None]]:
 
 
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
-    def gif_builder(gifs: List[str], emojis: List[str] = None):
+    def gif_builder(gif_choices: List[str], emojis: List[str] = None):
         async def gif_lambda(bot, message):
-            if len(gifs) > 0 and not bot.is_rate_limited():
+            if len(gif_choices) > 0 and not bot.is_rate_limited():
                 bot.reset_rate_limit()
-                bot.last_gif_msg = await message.channel.send(random.choice(gifs))
+                bot.last_gif_msg = await message.channel.send(
+                    random.choice(gif_choices)
+                )
             if emojis is not None:
                 for emoji in emojis:
                     await bot.emoji_react(message, emoji)
