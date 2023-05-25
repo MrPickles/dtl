@@ -102,7 +102,7 @@ def silence(_, message) -> Optional[Callable[[Any, Any], None]]:
             bot.last_gif_msg = None
             bot.reset_rate_limit(datetime.now() + timedelta(hours=1))
             await message.channel.send(
-                "Sorry about that. I won't send gifs for the next hour. 😓"
+                "Sorry about that. I won't send gifs for the next hour. 💩"
             )
         await bot.emoji_react(message, "feelsbadman")
 
@@ -110,23 +110,22 @@ def silence(_, message) -> Optional[Callable[[Any, Any], None]]:
 
 
 def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
-    def gif_builder(gif_choices: List[str], emojis: List[str] = None):
+    def gif_builder(gif_choices: List[str], emojis: List[str] = []):
         async def gif_lambda(bot, message):
             if len(gif_choices) > 0 and not bot.is_rate_limited():
                 bot.reset_rate_limit()
                 bot.last_gif_msg = await message.channel.send(
                     random.choice(gif_choices)
                 )
-            if emojis is not None:
-                for emoji in emojis:
-                    await bot.emoji_react(message, emoji)
+            for emoji in emojis:
+                await bot.emoji_react(message, emoji)
 
         return gif_lambda
 
     if bot.user in message.mentions:
         return gif_builder(greeting_gifs, ["👋"])
 
-    if "69" in message.content:
+    if "69" in message.content or "420" in message.content:
         return gif_builder([], ["nice"])
 
     tokens = re.sub("[^a-z ]", "", message.content.lower()).split(" ")

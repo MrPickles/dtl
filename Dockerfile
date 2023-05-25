@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.8.15-alpine3.16
+FROM python:3.11.3-alpine3.18
 
 RUN apk add build-base
 RUN apk add libffi-dev
