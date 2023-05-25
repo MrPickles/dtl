@@ -77,7 +77,7 @@ class LeagueBot(discord.Client):
         self, duration: timedelta, callback, on_cancelled=None
     ) -> None:
         if self.debug:
-            duration = timedelta(seconds=5)
+            duration = timedelta(seconds=3)
 
         async def reminder():
             try:
@@ -88,7 +88,7 @@ class LeagueBot(discord.Client):
                 self.pending_reminder = None
                 logger.info("Coroutine completed!")
             except aio.CancelledError:
-                logger.info("Coroutine was cancelled!")
+                logger.info("Coroutine was cancelled! :(")
 
         if self.pending_reminder is not None:
             # Cancel any pending reminders.
