@@ -1,4 +1,14 @@
+__pycache__/
+
+tests/
+
+.dockerignore
+.env
+.env.example
+.flake8
+.gitignore
+.pre-commit-config.yaml
+.pylintrc
+
 Dockerfile
-Procfile
 README.md
-tests
