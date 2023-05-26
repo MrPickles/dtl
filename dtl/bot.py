@@ -22,7 +22,7 @@ config: List[Callable[[Any, Any], Optional[Callable[[Any, Any], None]]]] = [
 
 class LeagueBot(discord.Client):
     def __init__(self, debug: bool = False):
-        super().__init__()
+        super().__init__(intents=discord.Intents.all())
         self.debug = debug
         self.pending_reminder: Optional[aio.Task] = None
         self.rate_limit: datetime = datetime.utcfromtimestamp(0)
