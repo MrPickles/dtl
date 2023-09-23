@@ -29,3 +29,4 @@ not_stonks = "https://user-images.githubusercontent.com/5153189/117723208-1cc588
 zaddy = "https://gfycat.com/blondfluidblowfish.gif"
 are_you_sure = "https://cdn.discordapp.com/attachments/428695150294859790/1050522089200816138/D2A84706-EC25-493B-862E-1CA856C523DA.gif"
 aladeen = "https://giphy.com/gifs/reaction-OZDNxToVSsUGk"
+pinched_fingers = "https://cdn.discordapp.com/attachments/428695150294859790/1154532281738870784/image0.gif"

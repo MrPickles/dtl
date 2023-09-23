@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import emoji
 import logging
 from typing import Optional, Callable, Any, List, Tuple
 import re
@@ -48,6 +49,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["zaddy"], {}, ([gifs.zaddy], [])),
     (["cukier"], {}, ([gifs.are_you_sure], ["thonk"])),
     (["aladeen"], {}, ([gifs.aladeen], [])),
+    (["🤌"], {}, ([gifs.pinched_fingers], ["🤌"])),
 ]
 
 
@@ -130,6 +132,8 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
         return gif_builder([], ["nice"])
 
     tokens = re.sub("[^a-z ]", "", message.content.lower()).split(" ")
+    tokens.extend(emoji.distinct_emoji_list(message.content))
+    print(tokens)
 
     def check(keywords, cond=lambda t, k: t == k, reducer=any) -> bool:
         return reducer(map(lambda k: any(map(lambda t: cond(t, k), tokens)), keywords))

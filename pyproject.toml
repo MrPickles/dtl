@@ -9,6 +9,7 @@ python = "^3.10"
 "discord.py" = "^2.2.3"
 python-dotenv = "^1.0.0"
 humanize = "^4.6.0"
+emoji = "^2.8.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.3.1"
