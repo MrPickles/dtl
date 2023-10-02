@@ -151,11 +151,17 @@ def so_league(_, message) -> Optional[Callable[[Any, Any], None]]:
 
     def mention_for_channel(message) -> str:
         mention_map = {
-            consts.TBH_DEBUG_CHANNEL: consts.TBH_SUMMONER_ROLE,
-            consts.TBH_GENERAL_CHANNEL: consts.TBH_SUMMONER_ROLE,
+            consts.TBH_DEBUG_CHANNEL: {
+                "League": consts.TBH_SUMMONER_ROLE,
+                "Valorant": consts.TBH_VALORANT_ROLE,
+            },
+            consts.TBH_GENERAL_CHANNEL: {
+                "League": consts.TBH_SUMMONER_ROLE,
+                "Valorant": consts.TBH_VALORANT_ROLE,
+            },
         }
         if message.channel.id in mention_map:
-            role_id = mention_map[message.channel.id]
+            role_id = mention_map[message.channel.id][game]
             role = discord.utils.get(message.guild.roles, id=role_id)
             if role is not None:
                 return role.mention
