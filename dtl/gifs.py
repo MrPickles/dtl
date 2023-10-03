@@ -19,7 +19,7 @@ stonks = "https://camo.githubusercontent.com/ade7a20b0b181b449218ae1162454647a78
 hayasaka = "https://i.imgur.com/9QamQDE.gif"
 very_nice = "https://tenor.com/sbvk.gif"
 nice_to_meet_you = "http://gph.is/2ebqM3y"
-cheesesteak_joe = "https://www.mcall.com/resizer/kOnDj8vjKooAtTmKZwvUI-m01t8=/800x673/top/arc-anglerfish-arc2-prod-tronc.s3.amazonaws.com/public/5TEPU2PMSNBGXDC2TA6JFVD6KQ.jpg"
+cheesesteak_joe = "https://arc-anglerfish-arc2-prod-tronc.s3.amazonaws.com/public/5TEPU2PMSNBGXDC2TA6JFVD6KQ.jpg"
 time_to_stop = "https://i.imgur.com/CoWZ05t.gif"
 chainwax = "https://i.imgur.com/UqcDukt.gif"
 lets_play_catan = "https://media.giphy.com/media/ky8ox2hRyL64og6MY3/giphy.gif"
