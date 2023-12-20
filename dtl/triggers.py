@@ -50,6 +50,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["cukier"], {}, ([gifs.are_you_sure], ["thonk"])),
     (["aladeen"], {}, ([gifs.aladeen], [])),
     (["🤌"], {}, ([gifs.pinched_fingers], ["🤌"])),
+    (["cybersecurity"], {}, ([gifs.cybersecurity], [])),
 ]
 
 
