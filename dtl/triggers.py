@@ -133,7 +133,6 @@ def giphy_time(bot, message) -> Optional[Callable[[Any, Any], None]]:
 
     tokens = re.sub("[^a-z ]", "", message.content.lower()).split(" ")
     tokens.extend(emoji.distinct_emoji_list(message.content))
-    print(tokens)
 
     def check(keywords, cond=lambda t, k: t == k, reducer=any) -> bool:
         return reducer(map(lambda k: any(map(lambda t: cond(t, k), tokens)), keywords))
