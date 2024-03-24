@@ -47,7 +47,6 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
     (["cheesesteak", "philly"], {}, ([gifs.cheesesteak_joe], [])),
     (["pussy", "chainwax", "chain"], {}, ([gifs.chainwax], [])),
     (["zaddy"], {}, ([gifs.zaddy], [])),
-    (["cukier"], {}, ([gifs.are_you_sure], ["thonk"])),
     (["aladeen"], {}, ([gifs.aladeen], [])),
     (["🤌"], {}, ([gifs.pinched_fingers], ["🤌"])),
     (["cybersecurity"], {}, ([gifs.cybersecurity], [])),
