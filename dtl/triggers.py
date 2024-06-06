@@ -28,7 +28,7 @@ gif_config: List[Tuple[List[str], dict, Tuple[List[str], Optional[List[str]]]]] 
         {"reducer": all},
         ([gifs.terraria, gifs.lets_play_catan, gifs.catan_ragequit], ["thonk"]),
     ),
-    (["pizza"], {}, ([gifs.pizza_time, gifs.troy_pizza_time], ["🍕"])),
+    (["pizza"], {}, ([gifs.pizza_time, gifs.troy_pizza_time, gifs.pizza_roof], ["🍕"])),
     (["elon", "musk", "simulation", "tesla"], {}, ([gifs.elon_musk], ["🚭"])),
     (
         ["trigger"],
