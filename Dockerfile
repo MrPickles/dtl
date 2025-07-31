@@ -8,5 +8,5 @@ RUN pip install poetry
 COPY . /app
 WORKDIR /app
 
-RUN poetry install --no-dev
+RUN poetry install --without dev
 ENTRYPOINT poetry run bot
