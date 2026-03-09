@@ -6,7 +6,7 @@ Legends.
 ## Running with Docker
 
 There's a Docker image for this bot:
-https://hub.docker.com/repository/docker/liuandrewk/dtl
+https://hub.docker.com/r/liuandrewk/dtl
 
 To run it, you'll need a `BOT_TOKEN` specified as an environment variable.
 
@@ -16,12 +16,12 @@ docker run -it -e BOT_TOKEN=${BOT_TOKEN} docker.io/liuandrewk/dtl
 
 ## Developing Locally
 
-1. Install [Poetry](https://python-poetry.org/).
-2. Install dependencies. `poetry install`
+1. Install [uv](https://docs.astral.sh/uv/).
+2. Install dependencies. `uv sync`
 3. Put secrets in `.env`.
-4. Run the server. `poetry run bot`
+4. Run the server. `uv run bot`
 5. If you want to make commits, please install the precommit hooks.
-   `poetry run pre-commit install`
+   `uv run pre-commit install`
 
 ## Developing with Docker
 

@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
-FROM python:3.10-alpine
+FROM python:3.12-alpine
+COPY --from=ghcr.io/astral-sh/uv:0.10.9 /uv /uvx /bin/
 
 RUN apk add build-base
 RUN apk add libffi-dev
-RUN pip install poetry
 
 COPY . /app
 WORKDIR /app
 
-RUN poetry install --without dev
-ENTRYPOINT poetry run bot
+RUN uv sync --frozen --no-dev
+ENTRYPOINT ["uv", "run", "bot"]
