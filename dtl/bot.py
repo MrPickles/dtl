@@ -26,8 +26,13 @@ class LeagueBot(discord.Client):
         self.debug = debug
         self.pending_reminder: Optional[aio.Task] = None
         self.rate_limit: datetime = datetime.utcfromtimestamp(0)
+        self.start_time = datetime.now()
+        self.tree = discord.app_commands.CommandTree(self)
         self.last_gif_msg = None
         random.seed()
+
+    async def setup_hook(self):
+        await self.tree.sync()
 
     async def on_ready(self):
         logger.info("Logged in as %s with ID %s", self.user.name, self.user.id)

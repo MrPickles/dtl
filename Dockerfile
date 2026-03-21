@@ -8,5 +8,8 @@ RUN apk add libffi-dev
 COPY . /app
 WORKDIR /app
 
+ARG COMMIT_SHA="unknown"
+ENV COMMIT_SHA=${COMMIT_SHA}
+
 RUN uv sync --frozen --no-dev
 ENTRYPOINT ["uv", "run", "bot"]
