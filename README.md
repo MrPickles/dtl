@@ -20,8 +20,16 @@ docker run -it -e BOT_TOKEN=${BOT_TOKEN} docker.io/liuandrewk/dtl
 2. Install dependencies. `uv sync`
 3. Put secrets in `.env`.
 4. Run the server. `uv run bot`
-5. If you want to make commits, please install the precommit hooks.
+5. Run tests with the project environment. `uv run pytest -q`
+6. If you want to make commits, please install the precommit hooks.
    `uv run pre-commit install`
+
+7. If you need to modify dependencies, use `uv add <package>` for runtime
+   dependencies, `uv add --dev <package>` for development dependencies, and
+   `uv remove <package>` to remove a dependency.
+
+> Note: prefer `uv run ...` commands (including tests) instead of invoking
+> tools directly from the system Python environment.
 
 ## Developing with Docker
 

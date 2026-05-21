@@ -1,36 +1,45 @@
 from datetime import timedelta
+from types import SimpleNamespace
 
 from dtl import __version__
-from dtl.util import (
-    this_person_wants_to_play_league as tpwtpl,
-    parse_timer,
-    is_pizza_time,
-)
+from dtl.triggers import giphy_time, so_league
+from dtl.util import parse_timer
+
+
+class DummyBot:
+    def __init__(self):
+        self.user = object()
+
+    def is_rate_limited(self):
+        return False
+
+
+class DummyMessage(SimpleNamespace):
+    pass
 
 
 def test_version():
     assert __version__ == "0.1.0"
 
 
-def test_tpwtpl():
+def test_so_league_trigger_detection():
     # Basic cases
-    assert tpwtpl("SL?")
-    assert tpwtpl("sl?")
-    assert tpwtpl("DTL?")
-    assert tpwtpl("sl?")
+    assert so_league(None, DummyMessage(content="SL?")) is not None
+    assert so_league(None, DummyMessage(content="sl?")) is not None
+    assert so_league(None, DummyMessage(content="DTL?")) is not None
 
     # Cases with other stuff before the question mark
-    assert tpwtpl("SL alsdkfjalskdjfladf?")
-    assert tpwtpl("DTL in 69 minutes?")
+    assert so_league(None, DummyMessage(content="SL alsdkfjalskdjfladf?")) is not None
+    assert so_league(None, DummyMessage(content="DTL in 69 minutes?")) is not None
 
     # Negative cases
-    assert not tpwtpl("potatoes?")
-    assert not tpwtpl("So league?")
-    assert not tpwtpl("SL")
-    assert not tpwtpl("DTL")
-    assert not tpwtpl("slick?")
-    assert not tpwtpl("slow?")
-    assert not tpwtpl("when you finally go to sleep?")
+    assert so_league(None, DummyMessage(content="potatoes?")) is None
+    assert so_league(None, DummyMessage(content="So league?")) is None
+    assert so_league(None, DummyMessage(content="SL")) is None
+    assert so_league(None, DummyMessage(content="DTL")) is None
+    assert so_league(None, DummyMessage(content="slick?")) is None
+    assert so_league(None, DummyMessage(content="slow?")) is None
+    assert so_league(None, DummyMessage(content="when you finally go to sleep?")) is None
 
 
 def test_parse_timer():
@@ -56,12 +65,13 @@ def test_parse_timer():
     assert parse_timer("DTL in 3 minutes?") is None
 
 
-def test_pizza_time():
-    assert is_pizza_time("pizza")
-    assert is_pizza_time("time")
-    assert is_pizza_time("pizza time")
-    assert is_pizza_time("pIzZA TiMe")
-    assert is_pizza_time("time to stop")
+def test_pizza_time_trigger_detection():
+    bot = DummyBot()
 
-    assert not is_pizza_time("piazza")
-    assert not is_pizza_time("??????")
+    assert giphy_time(bot, DummyMessage(content="pizza", mentions=[])) is not None
+    assert giphy_time(bot, DummyMessage(content="pizza time", mentions=[])) is not None
+    assert giphy_time(bot, DummyMessage(content="pIzZA TiMe", mentions=[])) is not None
+    assert giphy_time(bot, DummyMessage(content="family time", mentions=[])) is not None
+
+    assert giphy_time(bot, DummyMessage(content="piazza", mentions=[])) is None
+    assert giphy_time(bot, DummyMessage(content="??????", mentions=[])) is None
