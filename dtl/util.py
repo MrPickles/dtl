@@ -38,3 +38,4 @@ def parse_timer(msg: str) -> Optional[timedelta]:
         "Time unit didn't parse (%s) or value was out of bounds (%s)", full_unit, value
     )
     return None
+
