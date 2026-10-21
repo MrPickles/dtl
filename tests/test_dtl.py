@@ -39,7 +39,9 @@ def test_so_league_trigger_detection():
     assert so_league(None, DummyMessage(content="DTL")) is None
     assert so_league(None, DummyMessage(content="slick?")) is None
     assert so_league(None, DummyMessage(content="slow?")) is None
-    assert so_league(None, DummyMessage(content="when you finally go to sleep?")) is None
+    assert (
+        so_league(None, DummyMessage(content="when you finally go to sleep?")) is None
+    )
 
 
 def test_parse_timer():

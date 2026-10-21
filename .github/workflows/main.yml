@@ -13,10 +13,12 @@ jobs:
       - name: Run Ruff Linter
         uses: astral-sh/ruff-action@v1
         with:
+          version: "0.15.7"
           args: "check"
       - name: Run Ruff Formatter
         uses: astral-sh/ruff-action@v1
         with:
+          version: "0.15.7"
           args: "format --check"
 
   build:
