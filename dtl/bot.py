@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import datetime, timedelta
 from typing import Optional, List, Callable, Any
 import asyncio as aio
@@ -22,7 +23,10 @@ config: List[Callable[[Any, Any], Optional[Callable[[Any, Any], None]]]] = [
 
 class LeagueBot(discord.Client):
     def __init__(self, debug: bool = False):
-        super().__init__(intents=discord.Intents.all())
+        super().__init__(
+            intents=discord.Intents.all(),
+            proxy=os.getenv("HTTPS_PROXY") or os.getenv("HTTP_PROXY"),
+        )
         self.debug = debug
         self.pending_reminder: Optional[aio.Task] = None
         self.rate_limit: datetime = datetime.utcfromtimestamp(0)
