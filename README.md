@@ -6,6 +6,8 @@ Legends.
 Use `/spongebob text:Hello world` to get `hElLo WoRlD`. Spaces, punctuation,
 and emoji are preserved. The command accepts up to 1,000 characters and does
 not ping mentions in the converted text.
+Omit `text` to convert the latest non-bot text message in the channel (searching
+the 50 messages before the command). This requires Read Message History permission.
 
 ## Running with Docker
 
