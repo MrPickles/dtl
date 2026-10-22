@@ -77,15 +77,23 @@ jobs:
       - name: Queue dtl deployment in Arcane
         env:
           ARCANE_DTL_WEBHOOK_URL: ${{ secrets.ARCANE_DTL_WEBHOOK_URL }}
+          ARCANE_CF_CLIENT_ID: ${{ secrets.ARCANE_CF_CLIENT_ID }}
+          ARCANE_CF_CLIENT_SECRET: ${{ secrets.ARCANE_CF_CLIENT_SECRET }}
         run: |
           if [ -z "$ARCANE_DTL_WEBHOOK_URL" ]; then
             echo "::error::ARCANE_DTL_WEBHOOK_URL is not configured"
+            exit 1
+          fi
+          if [ -z "$ARCANE_CF_CLIENT_ID" ] || [ -z "$ARCANE_CF_CLIENT_SECRET" ]; then
+            echo "::error::Cloudflare deployment service credentials are not configured"
             exit 1
           fi
           # 202 means queued, not deployed. Arcane records the eventual outcome
           # in its Activity Center. Never print the tokenized URL or use -v.
           status=$(curl --silent --show-error --output response.json \
             --write-out '%{http_code}' --connect-timeout 15 --max-time 60 \
+            --header "CF-Access-Client-Id: $ARCANE_CF_CLIENT_ID" \
+            --header "CF-Access-Client-Secret: $ARCANE_CF_CLIENT_SECRET" \
             --request POST "$ARCANE_DTL_WEBHOOK_URL")
           if [ "$status" != "202" ]; then
             echo "::error::Arcane rejected the deployment trigger (HTTP $status)"
