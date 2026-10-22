@@ -79,8 +79,8 @@ class LeagueBot(discord.Client):
         )
         return rate_limited
 
-    def reset_rate_limit(self, when: datetime = datetime.now()) -> None:
-        self.rate_limit = when
+    def reset_rate_limit(self, when: Optional[datetime] = None) -> None:
+        self.rate_limit = datetime.now() if when is None else when
 
     async def remind_about_league(
         self, duration: timedelta, callback, on_cancelled=None

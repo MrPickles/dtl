@@ -1,7 +1,10 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 from types import SimpleNamespace
 
+import pytest
+
 from dtl import __version__
+from dtl.bot import LeagueBot
 from dtl.triggers import giphy_time, so_league
 from dtl.util import parse_timer
 
@@ -16,6 +19,39 @@ class DummyBot:
 
 class DummyMessage(SimpleNamespace):
     pass
+
+
+@pytest.mark.parametrize("debug,cooldown", [(False, 900), (True, 2)])
+def test_gif_cooldown_refreshes_after_each_reset(monkeypatch, debug, cooldown):
+    bot = LeagueBot(debug=debug)
+    now = datetime(2030, 1, 1)
+    monkeypatch.setattr("dtl.bot.datetime", SimpleNamespace(now=lambda: now))
+
+    assert not bot.is_rate_limited()
+    bot.reset_rate_limit()
+    assert bot.is_rate_limited()
+
+    now += timedelta(seconds=cooldown - 1)
+    assert bot.is_rate_limited()
+    now += timedelta(seconds=1)
+    assert not bot.is_rate_limited()
+
+    bot.reset_rate_limit()
+    assert bot.is_rate_limited()
+    now += timedelta(seconds=cooldown)
+    assert not bot.is_rate_limited()
+
+
+def test_gif_silence_preserves_explicit_timestamp(monkeypatch):
+    bot = LeagueBot()
+    now = datetime(2030, 1, 1)
+    monkeypatch.setattr("dtl.bot.datetime", SimpleNamespace(now=lambda: now))
+
+    bot.reset_rate_limit(now + timedelta(hours=1))
+    now += timedelta(hours=1)
+    assert bot.is_rate_limited()
+    now += timedelta(minutes=15)
+    assert not bot.is_rate_limited()
 
 
 def test_version():
