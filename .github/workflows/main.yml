@@ -5,7 +5,19 @@ on:
     branches:
       - "master"
 
+# Keep image publication and deployment ordered across pushes. Do not interrupt
+# a running publication/deployment when another commit arrives.
+concurrency:
+  group: dtl-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
 jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -22,12 +34,12 @@ jobs:
           args: "format --check"
 
   build:
-    needs: lint
+    needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -56,3 +68,27 @@ jobs:
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/dtl:latest
           build-args: |
             COMMIT_SHA=${{ steps.vars.outputs.sha_short }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Queue dtl deployment in Arcane
+        env:
+          ARCANE_DTL_WEBHOOK_URL: ${{ secrets.ARCANE_DTL_WEBHOOK_URL }}
+        run: |
+          if [ -z "$ARCANE_DTL_WEBHOOK_URL" ]; then
+            echo "::error::ARCANE_DTL_WEBHOOK_URL is not configured"
+            exit 1
+          fi
+          # 202 means queued, not deployed. Arcane records the eventual outcome
+          # in its Activity Center. Never print the tokenized URL or use -v.
+          status=$(curl --silent --show-error --output response.json \
+            --write-out '%{http_code}' --connect-timeout 15 --max-time 60 \
+            --request POST "$ARCANE_DTL_WEBHOOK_URL")
+          if [ "$status" != "202" ]; then
+            echo "::error::Arcane rejected the deployment trigger (HTTP $status)"
+            exit 1
+          fi
+          echo "Arcane accepted the dtl deployment. Check its Activity Center for completion." >> "$GITHUB_STEP_SUMMARY"
