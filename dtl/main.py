@@ -9,6 +9,7 @@ import humanize
 from datetime import datetime
 
 from dtl.bot import LeagueBot
+from dtl.commands import spongebob_command
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ def entrypoint():
         sys.exit(1)
 
     bot = LeagueBot(debug)
+    bot.tree.add_command(spongebob_command)
 
     @bot.tree.command(name="health", description="Get vitals about the bot")
     async def health_command(interaction: discord.Interaction):

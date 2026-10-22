@@ -3,6 +3,10 @@
 This is a Discord bot that mercilessly pings people when playing League of
 Legends.
 
+Use `/spongebob text:Hello world` to get `hElLo WoRlD`. Spaces, punctuation,
+and emoji are preserved. The command accepts up to 1,000 characters and does
+not ping mentions in the converted text.
+
 ## Running with Docker
 
 There's a Docker image for this bot:

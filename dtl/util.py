@@ -5,6 +5,18 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 
+def spongebob_text(text: str) -> str:
+    result = []
+    uppercase = False
+    for character in text:
+        if character.lower() != character.upper():
+            result.append(character.upper() if uppercase else character.lower())
+            uppercase = not uppercase
+        else:
+            result.append(character)
+    return "".join(result)
+
+
 def parse_timer(msg: str) -> Optional[timedelta]:
     in_split = msg.split(" in ")
     if len(in_split) != 2:
