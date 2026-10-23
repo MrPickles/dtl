@@ -280,6 +280,7 @@ name = "dtl"
 version = "0.1.1"
 source = { editable = "." }
 dependencies = [
+    { name = "aiohttp" },
     { name = "discord-py" },
     { name = "emoji" },
     { name = "humanize" },
@@ -296,6 +297,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "aiohttp", specifier = ">=3.14.5" },
     { name = "discord-py", specifier = ">=2.7.1" },
     { name = "emoji", specifier = ">=2.15.0" },
     { name = "humanize", specifier = ">=4.15.0" },

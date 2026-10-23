@@ -8,6 +8,7 @@ import random
 import discord  # type: ignore
 
 from dtl.consts import TBH_DEBUG_CHANNEL
+from dtl.health import health_server
 from dtl.triggers import aram, giphy_time, so_league, silence, censor
 
 logger = logging.getLogger(__name__)
@@ -34,6 +35,10 @@ class LeagueBot(discord.Client):
         self.tree = discord.app_commands.CommandTree(self)
         self.last_gif_msg = None
         random.seed()
+
+    async def start(self, token: str, *, reconnect: bool = True):
+        async with health_server(self):
+            await super().start(token, reconnect=reconnect)
 
     async def setup_hook(self):
         await self.tree.sync()
